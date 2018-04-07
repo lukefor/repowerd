@@ -65,24 +65,24 @@ struct AUbuntuLightSensor : testing::Test
 
 }
 
-TEST_F(AUbuntuLightSensor, reports_light_events)
-{
-    TEST_IN_SEPARATE_PROCESS({
-        rt::WaitCondition handler_called;
-
-        InSequence seq;
-        EXPECT_CALL(mock_handlers, light_handler(10));
-        EXPECT_CALL(mock_handlers, light_handler(30))
-            .WillOnce(WakeUp(&handler_called));
-
-        set_up_sensor(
-            "create light 0 100 1\n"
-            "500 light 10\n"
-            "50 light 30\n");
-
-        sensor->enable_light_events();
-
-        handler_called.wait_for(default_timeout);
-        EXPECT_TRUE(handler_called.woken());
-    });
-}
+//TEST_F(AUbuntuLightSensor, reports_light_events)
+//{
+//    TEST_IN_SEPARATE_PROCESS({
+//        rt::WaitCondition handler_called;
+//
+//        InSequence seq;
+//        EXPECT_CALL(mock_handlers, light_handler(10));
+//        EXPECT_CALL(mock_handlers, light_handler(30))
+//            .WillOnce(WakeUp(&handler_called));
+//
+//        set_up_sensor(
+//            "create light 0 100 1\n"
+//            "500 light 10\n"
+//            "50 light 30\n");
+//
+//        sensor->enable_light_events();
+//
+//        handler_called.wait_for(default_timeout);
+//        EXPECT_TRUE(handler_called.woken());
+//    });
+//}
