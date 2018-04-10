@@ -65,7 +65,8 @@ add_library(
 
 target_link_libraries(
     repowerd-adapters
-
+    X11
+    Xext
     suspend
     ${ANDROID_PROPERTIES_LDFLAGS} ${ANDROID_PROPERTIES_LIBRARIES}
     ${GIO_LDFLAGS} ${GIO_LIBRARIES}
