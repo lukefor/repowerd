@@ -177,6 +177,8 @@ repowerd::HandlerRegistration repowerd::UPowerPowerSourceAndLid::register_power_
 repowerd::HandlerRegistration repowerd::UPowerPowerSourceAndLid::register_lid_handler(
     LidHandler const& handler)
 {
+    log->log(log_tag, "register_lid_handler");
+
     return EventLoopHandlerRegistration{
         dbus_event_loop,
             [this, &handler] { this->lid_handler = handler; },
@@ -441,10 +443,11 @@ void repowerd::UPowerPowerSourceAndLid::change_upower(
             auto const lid_is_closed = g_variant_get_boolean(value);
             log->log(log_tag, "change_upower(), lid_is_closed=%s",
                      lid_is_closed ? "true" : "false");
-            if (lid_is_closed)
+            if (lid_is_closed) {
                 lid_handler(LidState::closed);
-            else
+            } else {
                 lid_handler(LidState::open);
+            }
         }
 
         g_variant_unref(value);

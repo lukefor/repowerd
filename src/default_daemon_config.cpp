@@ -284,8 +284,10 @@ repowerd::DefaultDaemonConfig::the_session_tracker()
 std::shared_ptr<repowerd::StateMachineFactory>
 repowerd::DefaultDaemonConfig::the_state_machine_factory()
 {
-    if (!state_machine_factory)
+    if (!state_machine_factory) {
         state_machine_factory = std::make_shared<DefaultStateMachineFactory>(*this);
+        the_log()->log(log_tag, "Created DefaultStateMachineFactory");
+    }
     return state_machine_factory;
 }
 

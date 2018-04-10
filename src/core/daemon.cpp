@@ -36,8 +36,11 @@
 #include "user_activity.h"
 #include "voice_call_service.h"
 
+#include "src/core/log.h"
 #include <future>
 #include <algorithm>
+
+char const* const log_tag = "Daemon";
 
 repowerd::Daemon::Session::Session(
     std::shared_ptr<StateMachine> const& state_machine)
@@ -47,7 +50,8 @@ repowerd::Daemon::Session::Session(
 }
 
 repowerd::Daemon::Daemon(DaemonConfig& config)
-    : brightness_control{config.the_brightness_control()},
+    : the_log{config.the_log()},
+      brightness_control{config.the_brightness_control()},
       client_requests{config.the_client_requests()},
       client_settings{config.the_client_settings()},
       lid{config.the_lid()},
@@ -99,6 +103,8 @@ void repowerd::Daemon::flush()
 std::vector<repowerd::HandlerRegistration>
 repowerd::Daemon::register_event_handlers()
 {
+    the_log->log(log_tag, "register_event_handlers");
+
     std::vector<HandlerRegistration> registrations;
 
     registrations.push_back(
@@ -320,6 +326,7 @@ repowerd::Daemon::register_event_handlers()
         lid->register_lid_handler(
             [this] (LidState lid_state)
             {
+                the_log->log(log_tag, "lid handler - %d", lid_state == LidState::closed);
                 if (lid_state == LidState::closed)
                 {
                     enqueue_action_to_active_session(
