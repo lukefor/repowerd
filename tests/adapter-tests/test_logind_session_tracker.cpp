@@ -261,12 +261,12 @@ TEST_F(ALogindSessionTracker, marks_mir_sessions_as_repowerd_compatible)
     wait_until_active_session_is(session_id(2), repowerd::SessionType::RepowerdCompatible);
 }
 
-TEST_F(ALogindSessionTracker, marks_non_mir_sessions_as_repowerd_incompatible)
+TEST_F(ALogindSessionTracker, marks_non_mir_sessions_as_repowerd_compatible)
 {
     fake_logind.add_session(session_id(2), "x11", session_pid(2), session_uid(2));
     fake_logind.activate_session(session_id(2));
 
-    wait_until_active_session_is(session_id(2), repowerd::SessionType::RepowerdIncompatible);
+    wait_until_active_session_is(session_id(2), repowerd::SessionType::RepowerdCompatible);
 }
 
 TEST_F(ALogindSessionTracker, returns_session_id_for_pid_of_tracked_session)
