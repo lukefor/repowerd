@@ -44,6 +44,7 @@
 #include "adapters/ubuntu_performance_booster.h"
 #include "adapters/ubuntu_proximity_sensor.h"
 #include "adapters/unity_display.h"
+#include "adapters/x11_display.h"
 #include "adapters/unity_power_button.h"
 #include "adapters/unity_screen_service.h"
 #include "adapters/unity_user_activity.h"
@@ -147,7 +148,7 @@ struct NullSystemPowerControl : repowerd::SystemPowerControl
 std::shared_ptr<repowerd::DisplayInformation>
 repowerd::DefaultDaemonConfig::the_display_information()
 {
-    return the_unity_display();
+    return the_x11_display();
 }
 
 std::shared_ptr<repowerd::BrightnessControl>
@@ -189,7 +190,7 @@ repowerd::DefaultDaemonConfig::the_client_settings()
 std::shared_ptr<repowerd::DisplayPowerControl>
 repowerd::DefaultDaemonConfig::the_display_power_control()
 {
-    return the_unity_display();
+    return the_x11_display();
 }
 
 std::shared_ptr<repowerd::DisplayPowerEventSink>
@@ -566,6 +567,18 @@ repowerd::DefaultDaemonConfig::the_unity_display()
             the_dbus_bus_address());
     }
     return unity_display;
+}
+
+std::shared_ptr<repowerd::X11Display>
+repowerd::DefaultDaemonConfig::the_x11_display()
+{
+    if (!x11_display)
+    {
+        x11_display = std::make_shared<X11Display>(
+                the_log(),
+                the_dbus_bus_address());
+    }
+    return x11_display;
 }
 
 std::shared_ptr<repowerd::UnityScreenService>
