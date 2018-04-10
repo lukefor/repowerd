@@ -32,7 +32,7 @@ repowerd::DefaultStateMachineFactory::DefaultStateMachineFactory(
 std::shared_ptr<repowerd::StateMachine>
 repowerd::DefaultStateMachineFactory::create_state_machine(std::string const& name)
 {
-    daemon_config.the_log()->log(log_tag, "create_state_machine - DefaultStateMachine - %s", name.data());
+    daemon_config.the_log()->log(log_tag, "create_state_machine - DefaultStateMachine - %s", name.c_str());
 
     return std::make_shared<DefaultStateMachine>(daemon_config, name);
 }
