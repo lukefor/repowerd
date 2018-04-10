@@ -52,7 +52,8 @@ repowerd::X11Display::X11Display(
           dbus_event_loop{"Display"},
           has_active_external_displays_{false}
 {
-    dpy = XOpenDisplay(":0");
+    dpy = XOpenDisplay(NULL);
+    log->log(log_tag, "X11Display %p", (void*)dpy);
 
 //    dbus_signal_handler_registration = dbus_event_loop.register_signal_handler(
 //            dbus_connection,
@@ -82,7 +83,9 @@ void repowerd::X11Display::turn_on(DisplayPowerControlFilter filter)
 
     log->log(log_tag, "turn_on(%s)", filter_str.c_str());
 
-    DPMSForceLevel(dpy, DPMSModeOn);
+    Status status = DPMSForceLevel(dpy, DPMSModeOn);
+
+    log->log(log_tag, "turned_on(%s) - %d", filter_str.c_str(), status);
 }
 
 void repowerd::X11Display::turn_off(DisplayPowerControlFilter filter)
@@ -91,7 +94,9 @@ void repowerd::X11Display::turn_off(DisplayPowerControlFilter filter)
 
     log->log(log_tag, "turn_off(%s)", filter_str.c_str());
 
-    DPMSForceLevel(dpy, DPMSModeOff);
+    Status status = DPMSForceLevel(dpy, DPMSModeOff);
+
+    log->log(log_tag, "turned_off(%s) - %d", filter_str.c_str(), status);
 }
 
 bool repowerd::X11Display::has_active_external_displays()
