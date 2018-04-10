@@ -19,6 +19,10 @@
 #include "default_state_machine_factory.h"
 #include "default_state_machine.h"
 
+#include "src/core/log.h"
+
+char const* const log_tag = "DefaultStateMachineFactory";
+
 repowerd::DefaultStateMachineFactory::DefaultStateMachineFactory(
     DaemonConfig& daemon_config)
     : daemon_config(daemon_config)
@@ -28,5 +32,7 @@ repowerd::DefaultStateMachineFactory::DefaultStateMachineFactory(
 std::shared_ptr<repowerd::StateMachine>
 repowerd::DefaultStateMachineFactory::create_state_machine(std::string const& name)
 {
+    daemon_config.the_log()->log(log_tag, "create_state_machine - DefaultStateMachine - %s", name.data());
+
     return std::make_shared<DefaultStateMachine>(daemon_config, name);
 }

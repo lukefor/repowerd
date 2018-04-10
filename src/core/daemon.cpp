@@ -503,6 +503,8 @@ repowerd::Daemon::Action repowerd::Daemon::dequeue_action()
 void repowerd::Daemon::handle_session_activated(
     std::string const& session_id, SessionType session_type)
 {
+    the_log->log(log_tag, "handle_session_activated - incompat: %d",session_type == SessionType::RepowerdIncompatible);
+
     active_session->state_machine->pause();
 
     if (session_type == SessionType::RepowerdIncompatible)
