@@ -52,7 +52,7 @@ repowerd::X11Display::X11Display(
           dbus_event_loop{"Display"},
           has_active_external_displays_{false}
 {
-    dpy = XOpenDisplay(getenv("DISPLAY"));
+    dpy = XOpenDisplay(":0.0");
     log->log(log_tag, "X11Display %p", (void*)dpy);
 
 //    dbus_signal_handler_registration = dbus_event_loop.register_signal_handler(
