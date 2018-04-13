@@ -187,7 +187,7 @@ TEST_F(AX11Display, logs_turn_on_request)
     x11_display.turn_on(repowerd::DisplayPowerControlFilter::all);
 
     EXPECT_TRUE(fake_log.contains_line({"turn_on"}));
-    EXPECT_TRUE(fake_exec.contains_line({"/bin/su - gemini -c \"xset dpms force on\""}));
+    EXPECT_TRUE(fake_exec.contains_line({"/bin/su - gemini -c \"DISPLAY=:0 xset dpms force on\""}));
 }
 
 TEST_F(AX11Display, logs_turn_off_request)
@@ -196,5 +196,5 @@ TEST_F(AX11Display, logs_turn_off_request)
     x11_display.turn_off(repowerd::DisplayPowerControlFilter::all);
 
     EXPECT_TRUE(fake_log.contains_line({"turn_off"}));
-    EXPECT_TRUE(fake_exec.contains_line({"/bin/su - gemini -c \"xset dpms force off\""}));
+    EXPECT_TRUE(fake_exec.contains_line({"/bin/su - gemini -c \"DISPLAY=:0 xset dpms force off\""}));
 }
