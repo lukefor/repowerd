@@ -495,7 +495,7 @@ void repowerd::DefaultStateMachine::handle_proximity_near()
 
 void repowerd::DefaultStateMachine::handle_user_activity_changing_power_state()
 {
-    log->log(log_tag, "handle_user_activity_changing_power_state");
+    log->log(log_tag, "handle_user_activity_changing_power_state - %d", display_power_mode==DisplayPowerMode::on);
 
     if (display_power_mode == DisplayPowerMode::on)
     {
@@ -511,7 +511,7 @@ void repowerd::DefaultStateMachine::handle_user_activity_changing_power_state()
 
 void repowerd::DefaultStateMachine::handle_user_activity_extending_power_state()
 {
-    log->log(log_tag, "handle_user_activity_extending_power_state");
+    log->log(log_tag, "handle_user_activity_extending_power_state - %d", display_power_mode==DisplayPowerMode::on);
 
     if (display_power_mode == DisplayPowerMode::on)
     {
@@ -806,6 +806,8 @@ void repowerd::DefaultStateMachine::turn_off_display(
 void repowerd::DefaultStateMachine::turn_on_display_without_timeout(
     DisplayPowerChangeReason reason)
 {
+    log->log(log_tag, "turn_on_display_without_timeout p:%d, l:%d",paused, lid_closed);
+
     if (paused) return;
 
     system_power_control->disallow_automatic_suspend(suspend_id);
