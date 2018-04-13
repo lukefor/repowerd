@@ -69,6 +69,7 @@ add_executable(
     test_unity_screen_service.cpp
     test_unity_user_activity.cpp
     test_upower_power_source_and_lid.cpp
+    test_x11_display.cpp
 )
 
 target_link_libraries(

@@ -170,7 +170,10 @@ std::string repowerd::LogindSessionTracker::session_for_pid(pid_t pid)
                 auto const pid_euid = euid_of_pid(*filesystem, pid);
 
                 if (pid_euid == 0 || pid_euid == active_session_uid)
+                {
                     ret_session_id = active_session_id;
+                    active_user_id = active_session_uid;
+                }
             }
         }).get();
 
@@ -229,8 +232,8 @@ void repowerd::LogindSessionTracker::handle_dbus_change_seat_properties(
 
             g_variant_get(value, "(&s&o)", &session_id_cstr, &session_path_cstr);
 
-            log->log(log_tag, "change_seat_properties(%s), ActiveSession=(%s,%s)",
-                     seat.c_str(), session_id_cstr, session_path_cstr);
+            log->log(log_tag, "change_seat_properties(%s), ActiveSession=(%s,%s,%d)",
+                     seat.c_str(), session_id_cstr, session_path_cstr, active_user_id);
 
             if (std::string{session_id_cstr}.empty())
                 deactivate_session();

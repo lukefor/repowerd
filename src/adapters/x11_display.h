@@ -1,6 +1,22 @@
-//
-// Created by adam on 10/04/18.
-//
+/*
+ * Copyright © 2016 Canonical Ltd.
+ * Copyright © 2018 Gemian
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authored by: Alexandros Frantzis <alexandros.frantzis@canonical.com>
+ * Modified by: Adam Boardman <adamboardman@gmail.com>
+ */
 
 #pragma once
 
@@ -8,11 +24,11 @@
 #include "src/core/display_information.h"
 #include "src/core/handler_registration.h"
 #include "src/core/log.h"
+#include "src/core/exec.h"
 
 #include "dbus_connection_handle.h"
 #include "dbus_event_loop.h"
 
-#include <X11/Xlib.h>
 #include <memory>
 #include <atomic>
 
@@ -25,9 +41,8 @@ namespace repowerd
     public:
         X11Display(
                 std::shared_ptr<Log> const& log,
+                std::shared_ptr<Exec> const& exec,
                 std::string const& dbus_bus_address);
-
-        virtual ~X11Display();
 
         // From DisplayPowerControl
         void turn_on(DisplayPowerControlFilter filter) override;
@@ -35,6 +50,10 @@ namespace repowerd
 
         // From DisplayInformation
         bool has_active_external_displays() override;
+
+        // For testing
+        std::string active_username();
+        void set_active_username(const char *string);
 
     private:
         void handle_dbus_signal(
@@ -48,12 +67,19 @@ namespace repowerd
         void dbus_PropertiesChanged(GVariantIter* properties_iter);
         void dbus_ActiveOutputs(int32_t internal, int32_t external);
 
-        Display *dpy;
         std::shared_ptr<Log> const log;
+        std::shared_ptr<Exec> const exec;
         DBusConnectionHandle dbus_connection;
         DBusEventLoop dbus_event_loop;
         HandlerRegistration dbus_signal_handler_registration;
         std::atomic<bool> has_active_external_displays_;
+        std::string active_username_;
+
+        std::pair<std::string, std::string> dbus_get_active_session();
+
+        std::string dbus_get_session_user_name(const std::string &session_path);
+
+        void dbus_query_active_session();
     };
 
 }

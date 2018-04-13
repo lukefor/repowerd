@@ -51,6 +51,7 @@ public:
     std::shared_ptr<DisplayPowerEventSink> the_display_power_event_sink() override;
     std::shared_ptr<Lid> the_lid() override;
     std::shared_ptr<Log> the_log() override;
+    std::shared_ptr<Exec> the_exec() override;
     std::shared_ptr<ModemPowerControl> the_modem_power_control() override;
     std::shared_ptr<NotificationService> the_notification_service() override;
     std::shared_ptr<PerformanceBooster> the_performance_booster() override;
@@ -97,6 +98,7 @@ private:
     std::shared_ptr<Filesystem> filesystem;
     std::shared_ptr<LightSensor> light_sensor;
     std::shared_ptr<Log> log;
+    std::shared_ptr<Exec> exec;
     std::shared_ptr<ModemPowerControl> modem_power_control;
     std::shared_ptr<OfonoVoiceCallService> ofono_voice_call_service;
     std::shared_ptr<PerformanceBooster> performance_booster;
@@ -114,6 +116,7 @@ private:
     std::shared_ptr<UPowerPowerSourceAndLid> upower_power_source_and_lid;
     std::shared_ptr<UserActivity> user_activity;
     std::shared_ptr<WakeupService> wakeup_service;
+
 };
 
 }

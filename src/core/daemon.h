@@ -76,6 +76,7 @@ private:
     std::vector<std::string> session_with_active_calls();
 
     std::shared_ptr<Log> const the_log;
+    std::shared_ptr<Exec> const the_exec;
     std::shared_ptr<BrightnessControl> const brightness_control;
     std::shared_ptr<ClientRequests> const client_requests;
     std::shared_ptr<ClientSettings> const client_settings;

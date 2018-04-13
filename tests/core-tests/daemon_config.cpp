@@ -27,6 +27,7 @@
 #include "mock_display_power_event_sink.h"
 #include "fake_lid.h"
 #include "fake_log.h"
+#include "fake_exec.h"
 #include "mock_modem_power_control.h"
 #include "fake_notification_service.h"
 #include "mock_performance_booster.h"
@@ -85,6 +86,10 @@ std::shared_ptr<repowerd::Log> rt::DaemonConfig::the_log()
     return the_fake_log();
 }
 
+std::shared_ptr<repowerd::Exec> rt::DaemonConfig::the_exec()
+{
+    return the_fake_exec();
+}
 std::shared_ptr<repowerd::ModemPowerControl> rt::DaemonConfig::the_modem_power_control()
 {
     return the_mock_modem_power_control();
@@ -224,6 +229,14 @@ std::shared_ptr<rt::FakeLog> rt::DaemonConfig::the_fake_log()
         fake_log = std::make_shared<FakeLog>();
 
     return fake_log;
+}
+
+std::shared_ptr<rt::FakeExec> rt::DaemonConfig::the_fake_exec()
+{
+    if (!fake_exec)
+        fake_exec = std::make_shared<FakeExec>();
+
+    return fake_exec;
 }
 
 std::shared_ptr<NiceMock<rt::MockModemPowerControl>>

@@ -32,6 +32,7 @@
 #include "adapters/logind_session_tracker.h"
 #include "adapters/logind_system_power_control.h"
 #include "adapters/null_log.h"
+#include "adapters/null_exec.h"
 #include "adapters/ofono_voice_call_service.h"
 #include "adapters/real_chrono.h"
 #include "adapters/real_filesystem.h"
@@ -39,6 +40,7 @@
 #include "adapters/repowerd_service.h"
 #include "adapters/sysfs_backlight.h"
 #include "adapters/syslog_log.h"
+#include "adapters/sys_exec.h"
 #include "adapters/timerfd_wakeup_service.h"
 #include "adapters/ubuntu_light_sensor.h"
 #include "adapters/ubuntu_performance_booster.h"
@@ -557,6 +559,16 @@ repowerd::DefaultDaemonConfig::the_log()
     return log;
 }
 
+std::shared_ptr<repowerd::Exec>
+repowerd::DefaultDaemonConfig::the_exec()
+{
+    if (!exec)
+    {
+        exec = std::make_shared<SystemExec>();
+    }
+    return exec;
+}
+
 std::shared_ptr<repowerd::UnityDisplay>
 repowerd::DefaultDaemonConfig::the_unity_display()
 {
@@ -575,8 +587,9 @@ repowerd::DefaultDaemonConfig::the_x11_display()
     if (!x11_display)
     {
         x11_display = std::make_shared<X11Display>(
-                the_log(),
-                the_dbus_bus_address());
+            the_log(),
+            the_exec(),
+            the_dbus_bus_address());
     }
     return x11_display;
 }

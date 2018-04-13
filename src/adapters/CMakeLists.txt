@@ -56,7 +56,9 @@ set(
     unity_screen_service.cpp
     unity_user_activity.cpp
     upower_power_source_and_lid.cpp
-    x11_display.cpp)
+    x11_display.cpp
+    null_exec.cpp
+    sys_exec.cpp)
 
 add_library(
     repowerd-adapters STATIC

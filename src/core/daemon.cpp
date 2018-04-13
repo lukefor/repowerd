@@ -37,6 +37,7 @@
 #include "voice_call_service.h"
 
 #include "src/core/log.h"
+#include "src/core/exec.h"
 #include <future>
 #include <algorithm>
 
@@ -51,6 +52,7 @@ repowerd::Daemon::Session::Session(
 
 repowerd::Daemon::Daemon(DaemonConfig& config)
     : the_log{config.the_log()},
+      the_exec{config.the_exec()},
       brightness_control{config.the_brightness_control()},
       client_requests{config.the_client_requests()},
       client_settings{config.the_client_settings()},

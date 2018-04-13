@@ -20,7 +20,7 @@ add_library(
     fake_log.cpp
     fake_system_power_control.cpp
     spin_wait.cpp
-)
+    fake_exec.cpp)
 
 target_link_libraries(
     repowerd-test-common

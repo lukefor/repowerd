@@ -18,6 +18,7 @@
 
 #include "core/daemon.h"
 #include "core/log.h"
+#include "core/exec.h"
 #include "default_daemon_config.h"
 
 #include <csignal>

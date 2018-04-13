@@ -35,6 +35,7 @@ class MockDisplayPowerControl;
 class MockDisplayPowerEventSink;
 class FakeLid;
 class FakeLog;
+class FakeExec;
 class MockModemPowerControl;
 class FakeNotificationService;
 class MockPerformanceBooster;
@@ -59,6 +60,7 @@ public:
     std::shared_ptr<DisplayPowerEventSink> the_display_power_event_sink() override;
     std::shared_ptr<Lid> the_lid() override;
     std::shared_ptr<Log> the_log() override;
+    std::shared_ptr<Exec> the_exec() override;
     std::shared_ptr<ModemPowerControl> the_modem_power_control() override;
     std::shared_ptr<NotificationService> the_notification_service() override;
     std::shared_ptr<PerformanceBooster> the_performance_booster() override;
@@ -82,6 +84,7 @@ public:
     std::shared_ptr<testing::NiceMock<MockDisplayPowerEventSink>> the_mock_display_power_event_sink();
     std::shared_ptr<FakeLid> the_fake_lid();
     std::shared_ptr<FakeLog> the_fake_log();
+    std::shared_ptr<FakeExec> the_fake_exec();
     std::shared_ptr<testing::NiceMock<MockModemPowerControl>> the_mock_modem_power_control();
     std::shared_ptr<FakeNotificationService> the_fake_notification_service();
     std::shared_ptr<testing::NiceMock<MockPerformanceBooster>> the_mock_performance_booster();
@@ -107,6 +110,7 @@ private:
     std::shared_ptr<testing::NiceMock<MockDisplayPowerEventSink>> mock_display_power_event_sink;
     std::shared_ptr<FakeLid> fake_lid;
     std::shared_ptr<FakeLog> fake_log;
+    std::shared_ptr<FakeExec> fake_exec;
     std::shared_ptr<testing::NiceMock<MockModemPowerControl>> mock_modem_power_control;
     std::shared_ptr<FakeNotificationService> fake_notification_service;
     std::shared_ptr<testing::NiceMock<MockPerformanceBooster>> mock_performance_booster;
