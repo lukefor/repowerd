@@ -205,9 +205,9 @@ TEST_F(AUnityDisplay, turn_off_request_contacts_dbus_service)
     EXPECT_CALL(service.mock_dbus_calls, turn_off("external"))
         .WillOnce(WakeUp(&called));
 
-    unity_display.turn_off(repowerd::DisplayPowerControlFilter::all);
-    unity_display.turn_off(repowerd::DisplayPowerControlFilter::internal);
-    unity_display.turn_off(repowerd::DisplayPowerControlFilter::external);
+    unity_display.turn_off(repowerd::DisplayPowerControlFilter::all, false);
+    unity_display.turn_off(repowerd::DisplayPowerControlFilter::internal, false);
+    unity_display.turn_off(repowerd::DisplayPowerControlFilter::external, false);
 
     called.wait_for(default_timeout);
     EXPECT_TRUE(called.woken());
@@ -265,7 +265,7 @@ TEST_F(AUnityDisplay, logs_turn_on_request)
 
 TEST_F(AUnityDisplay, logs_turn_off_request)
 {
-    unity_display.turn_off(repowerd::DisplayPowerControlFilter::all);
+    unity_display.turn_off(repowerd::DisplayPowerControlFilter::all, false);
 
     EXPECT_TRUE(fake_log.contains_line({"turn_off"}));
 }

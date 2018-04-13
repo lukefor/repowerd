@@ -42,7 +42,7 @@ public:
 
     // From DisplayPowerControl
     void turn_on(DisplayPowerControlFilter filter) override;
-    void turn_off(DisplayPowerControlFilter filter) override;
+    void turn_off(DisplayPowerControlFilter filter, bool lid_closed) override;
 
     // From DisplayInformation
     bool has_active_external_displays() override;

@@ -97,19 +97,24 @@ void repowerd::X11Display::turn_on(DisplayPowerControlFilter filter)
 
     log->log(log_tag, "turn_on(%s)", filter_str.c_str());
 
-    std::string on_cmd = std::string("/bin/su - ")+active_username_+" -c \"DISPLAY=:0 xset dpms force on\"";
+    std::string on_cmd = std::string("/bin/su - ")+active_username_+" -c \"DISPLAY=:0 xrandr --output hwcomposer --auto; DISPLAY=:0 xset dpms force on\"";
     int ret = exec->exec(on_cmd.c_str());
 
     log->log(log_tag, "turned_on(%s) - %s(%d)", filter_str.c_str(), on_cmd.c_str(), ret);
 }
 
-void repowerd::X11Display::turn_off(DisplayPowerControlFilter filter)
+void repowerd::X11Display::turn_off(DisplayPowerControlFilter filter, bool lid_closed)
 {
     auto const filter_str = filter_to_str(filter);
 
     log->log(log_tag, "turn_off(%s)", filter_str.c_str());
 
-    std::string off_cmd = std::string("/bin/su - ")+active_username_+" -c \"DISPLAY=:0 xset dpms force off\"";
+    std::string off_cmd = std::string("/bin/su - ")+active_username_;
+    if (lid_closed) {
+        off_cmd += " -c \"DISPLAY=:0 xrandr --output hwcomposer --off\"";
+    } else {
+        off_cmd += " -c \"DISPLAY=:0 xset dpms force off\"";
+    }
     int ret = exec->exec(off_cmd.c_str());
 
     log->log(log_tag, "turned_off(%s) - %s(%d)", filter_str.c_str(), off_cmd.c_str(), ret);

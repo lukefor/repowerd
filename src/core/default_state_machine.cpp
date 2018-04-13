@@ -292,7 +292,7 @@ void repowerd::DefaultStateMachine::handle_lid_closed()
     }
     else
     {
-        display_power_control->turn_off(DisplayPowerControlFilter::internal);
+        display_power_control->turn_off(DisplayPowerControlFilter::internal, lid_closed);
     }
 }
 
@@ -785,7 +785,7 @@ void repowerd::DefaultStateMachine::turn_off_display(
     if (paused) return;
 
     brightness_control->set_off_brightness();
-    display_power_control->turn_off(DisplayPowerControlFilter::all);
+    display_power_control->turn_off(DisplayPowerControlFilter::all, lid_closed);
     if (reason != DisplayPowerChangeReason::proximity)
         modem_power_control->set_low_power_mode();
     display_power_mode = DisplayPowerMode::off;

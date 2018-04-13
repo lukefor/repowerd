@@ -99,7 +99,7 @@ void repowerd::UnityDisplay::turn_on(DisplayPowerControlFilter filter)
         g_variant_unref(reply);
 }
 
-void repowerd::UnityDisplay::turn_off(DisplayPowerControlFilter filter)
+void repowerd::UnityDisplay::turn_off(DisplayPowerControlFilter filter, bool)
 {
     auto const filter_str = filter_to_str(filter);
 
