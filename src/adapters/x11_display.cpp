@@ -111,7 +111,7 @@ void repowerd::X11Display::turn_off(DisplayPowerControlFilter filter, bool lid_c
 
     std::string off_cmd = std::string("/bin/su - ")+active_username_;
     if (lid_closed) {
-        off_cmd += " -c \"DISPLAY=:0 xrandr --output hwcomposer --off\"";
+        off_cmd += " -c \"DISPLAY=:0 xrandr --output hwcomposer --off; DISPLAY=:0 xset dpms force off\"";
     } else {
         off_cmd += " -c \"DISPLAY=:0 xset dpms force off\"";
     }

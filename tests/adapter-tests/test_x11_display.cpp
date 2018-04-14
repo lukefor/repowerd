@@ -205,5 +205,5 @@ TEST_F(AX11Display, turn_off_lid_closed_request)
     x11_display.turn_off(repowerd::DisplayPowerControlFilter::all, true);
 
     EXPECT_TRUE(fake_log.contains_line({"turn_off"}));
-    EXPECT_TRUE(fake_exec.contains_line({"/bin/su - gemini -c \"DISPLAY=:0 xrandr --output hwcomposer --off\""}));
+    EXPECT_TRUE(fake_exec.contains_line({"/bin/su - gemini -c \"DISPLAY=:0 xrandr --output hwcomposer --off; DISPLAY=:0 xset dpms force off\""}));
 }
