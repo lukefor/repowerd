@@ -18,21 +18,30 @@
 
 #pragma once
 
-#include "src/core/display_power_control.h"
+#include "handler_registration.h"
 
-#include <gmock/gmock.h>
+#include <functional>
 
 namespace repowerd
 {
-namespace test
-{
 
-class MockDisplayPowerControl : public DisplayPowerControl
+enum class LockState { inactive, active };
+using LockHandler = std::function<void(LockState)>;
+
+class Lock
 {
 public:
-    MOCK_METHOD1(turn_on, void(DisplayPowerControlFilter));
-    MOCK_METHOD2(turn_off, void(DisplayPowerControlFilter, bool));
+    virtual ~Lock() = default;
+
+    virtual void start_processing() = 0;
+
+    virtual HandlerRegistration register_lock_handler(
+        LockHandler const& handler) = 0;
+
+protected:
+    Lock() = default;
+    Lock(Lock const&) = default;
+    Lock& operator=(Lock const&) = default;
 };
 
-}
 }

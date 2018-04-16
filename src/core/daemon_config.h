@@ -31,6 +31,7 @@ class ClientSettings;
 class DisplayPowerControl;
 class DisplayPowerEventSink;
 class Lid;
+class Lock;
 class Log;
 class Exec;
 class ModemPowerControl;
@@ -60,6 +61,7 @@ public:
     virtual std::shared_ptr<DisplayPowerControl> the_display_power_control() = 0;
     virtual std::shared_ptr<DisplayPowerEventSink> the_display_power_event_sink() = 0;
     virtual std::shared_ptr<Lid> the_lid() = 0;
+    virtual std::shared_ptr<Lock> the_lock() = 0;
     virtual std::shared_ptr<Log> the_log() = 0;
     virtual std::shared_ptr<Exec> the_exec() = 0;
     virtual std::shared_ptr<ModemPowerControl> the_modem_power_control() = 0;

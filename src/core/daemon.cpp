@@ -38,6 +38,7 @@
 
 #include "src/core/log.h"
 #include "src/core/exec.h"
+#include "lock.h"
 #include <future>
 #include <algorithm>
 
@@ -57,6 +58,7 @@ repowerd::Daemon::Daemon(DaemonConfig& config)
       client_requests{config.the_client_requests()},
       client_settings{config.the_client_settings()},
       lid{config.the_lid()},
+      lock{config.the_lock()},
       notification_service{config.the_notification_service()},
       power_button{config.the_power_button()},
       power_source{config.the_power_source()},
@@ -342,6 +344,23 @@ repowerd::Daemon::register_event_handlers()
             }));
 
     registrations.push_back(
+        lock->register_lock_handler(
+            [this] (LockState lock_state)
+            {
+                the_log->log(log_tag, "lock handler - %d", lock_state == LockState::active);
+                if (lock_state == LockState::active)
+                {
+                    enqueue_action_to_active_session(
+                        [this] (Session* s) { s->state_machine->handle_lock_active(); });
+                }
+                else if (lock_state == LockState::inactive)
+                {
+                    enqueue_action_to_active_session(
+                        [this] (Session* s) { s->state_machine->handle_lock_inactive(); });
+                }
+            }));
+
+    registrations.push_back(
         client_settings->register_set_inactivity_behavior_handler(
             [this] (PowerAction power_action, PowerSupply power_supply,
                     std::chrono::milliseconds timeout, pid_t pid)
@@ -418,6 +437,7 @@ void repowerd::Daemon::start_event_processing()
     client_requests->start_processing();
     client_settings->start_processing();
     lid->start_processing();
+    lock->start_processing();
     notification_service->start_processing();
     power_button->start_processing();
     power_source->start_processing();

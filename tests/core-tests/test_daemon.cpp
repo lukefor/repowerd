@@ -21,6 +21,7 @@
 #include "fake_client_requests.h"
 #include "fake_client_settings.h"
 #include "fake_lid.h"
+#include "fake_lock.h"
 #include "fake_notification_service.h"
 #include "fake_power_button.h"
 #include "fake_power_source.h"
@@ -70,6 +71,9 @@ struct MockStateMachine : public repowerd::StateMachine
     MOCK_METHOD2(handle_set_lid_behavior,
                  void(repowerd::PowerAction power_action,
                       repowerd::PowerSupply power_supply));
+
+    MOCK_METHOD0(handle_lock_active, void());
+    MOCK_METHOD0(handle_lock_inactive, void());
 
     MOCK_METHOD0(handle_power_button_press, void());
     MOCK_METHOD0(handle_power_button_release, void());
@@ -306,6 +310,35 @@ TEST_F(ADaemon, notifies_state_machine_of_power_button_release)
 
     EXPECT_CALL(*config.the_mock_state_machine(), handle_power_button_release());
     config.the_fake_power_button()->release();
+}
+
+TEST_F(ADaemon, registers_starts_and_unregisters_lock_handler)
+{
+    InSequence s;
+    EXPECT_CALL(config.the_fake_lock()->mock, register_lock_handler(_));
+    EXPECT_CALL(config.the_fake_lock()->mock, start_processing());
+    start_daemon();
+    testing::Mock::VerifyAndClearExpectations(config.the_fake_lock().get());
+
+    EXPECT_CALL(config.the_fake_lock()->mock, unregister_lock_handler());
+    stop_daemon();
+    testing::Mock::VerifyAndClearExpectations(config.the_fake_lock().get());
+}
+
+TEST_F(ADaemon, notifies_state_machine_of_lock_active)
+{
+    start_daemon();
+
+    EXPECT_CALL(*config.the_mock_state_machine(), handle_lock_active());
+    config.the_fake_lock()->active();
+}
+
+TEST_F(ADaemon, notifies_state_machine_of_lock_inactive)
+{
+    start_daemon();
+
+    EXPECT_CALL(*config.the_mock_state_machine(), handle_lock_inactive());
+    config.the_fake_lock()->inactive();
 }
 
 TEST_F(ADaemon, registers_starts_and_unregisters_user_activity_handler)

@@ -115,6 +115,7 @@ repowerd::DefaultStateMachine::DefaultStateMachine(
       autobrightness_enabled{false},
       normal_brightness_value{0.5},
       lid_closed{false},
+      lock_active{false},
       suspend_allowed{true},
       suspend_pending{false}
 {
@@ -313,6 +314,22 @@ void repowerd::DefaultStateMachine::handle_lid_open()
     {
         turn_on_display_with_normal_timeout(DisplayPowerChangeReason::activity);
     }
+
+}
+
+void repowerd::DefaultStateMachine::handle_lock_active()
+{
+    log->log(log_tag, "handle_lock_closed()");
+
+    lock_active = true;
+
+}
+
+void repowerd::DefaultStateMachine::handle_lock_inactive()
+{
+    log->log(log_tag, "handle_lock_inactive()");
+
+    lock_active = false;
 
 }
 

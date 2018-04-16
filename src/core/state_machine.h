@@ -50,6 +50,9 @@ public:
         PowerAction power_action,
         PowerSupply power_supply) = 0;
 
+    virtual void handle_lock_active() = 0;
+    virtual void handle_lock_inactive() = 0;
+
     virtual void handle_no_notification() = 0;
     virtual void handle_notification() = 0;
 

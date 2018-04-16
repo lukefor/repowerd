@@ -1,5 +1,6 @@
 /*
  * Copyright © 2016 Canonical Ltd.
+ * Copyright © 2018 Gemian
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 3,
@@ -14,44 +15,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by: Alexandros Frantzis <alexandros.frantzis@canonical.com>
+ * Modified by: Adam Boardman <adamboardman@gmail.com>
  */
 
-#include "unity_user_activity.h"
+#include "x11_lock.h"
 #include "event_loop_handler_registration.h"
 
 namespace
 {
-auto const null_handler = [](repowerd::UserActivityType){};
-char const* const dbus_user_activity_name = "org.thinkglobally.Gemian.UserActivity";
-char const* const dbus_user_activity_path = "/org/thinkglobally/Gemian/UserActivity";
-char const* const dbus_user_activity_interface = "org.thinkglobally.Gemian.UserActivity";
-
-repowerd::UserActivityType user_activity_type_from_dbus_value(int32_t value)
-{
-    if (value == 0)
-        return repowerd::UserActivityType::change_power_state;
-    else
-        return repowerd::UserActivityType::extend_power_state;
-}
+    auto const null_handler = [](repowerd::LockState){};
+    char const* const x11_lock_bus_name = "org.thinkglobally.Gemian.Lock";
+    char const* const x11_lock_object_path = "/org/thinkglobally/Gemian/Lock";
+    char const* const x11_lock_interface_name = "org.thinkglobally.Gemian.Lock";
+    char const* const log_tag = "X11Lock";
 
 }
 
-repowerd::UnityUserActivity::UnityUserActivity(
-    std::string const& dbus_bus_address)
-    : dbus_connection{dbus_bus_address},
-      dbus_event_loop{"UserActivity"},
-      user_activity_handler{null_handler}
+repowerd::X11Lock::X11Lock(
+        std::shared_ptr<Log> const& log,
+        std::string const& dbus_bus_address)
+        : log{log},
+          dbus_connection{dbus_bus_address},
+          dbus_event_loop{"Lock"},
+          lock_handler{null_handler}
 {
 }
 
-void repowerd::UnityUserActivity::start_processing()
+void repowerd::X11Lock::start_processing()
 {
     dbus_signal_handler_registration = dbus_event_loop.register_signal_handler(
         dbus_connection,
-        dbus_user_activity_name,
-        dbus_user_activity_interface,
-        "Activity",
-        dbus_user_activity_path,
+        x11_lock_bus_name,
+        x11_lock_interface_name,
+        nullptr,
+        x11_lock_object_path,
         [this] (
             GDBusConnection* connection,
             gchar const* sender,
@@ -66,29 +63,27 @@ void repowerd::UnityUserActivity::start_processing()
         });
 }
 
-repowerd::HandlerRegistration repowerd::UnityUserActivity::register_user_activity_handler(
-    UserActivityHandler const& handler)
+repowerd::HandlerRegistration repowerd::X11Lock::register_lock_handler(
+    LockHandler const& handler)
 {
     return EventLoopHandlerRegistration{
         dbus_event_loop,
-            [this, &handler] { this->user_activity_handler = handler; },
-            [this] { this->user_activity_handler = null_handler; }};
+        [this, &handler] { this->lock_handler = handler; },
+        [this] { this->lock_handler = null_handler; }};
 }
 
-void repowerd::UnityUserActivity::handle_dbus_signal(
+void repowerd::X11Lock::handle_dbus_signal(
     GDBusConnection* /*connection*/,
     gchar const* /*sender*/,
     gchar const* /*object_path*/,
     gchar const* /*interface_name*/,
     gchar const* signal_name_cstr,
-    GVariant* parameters)
+    GVariant* /*parameters*/)
 {
     std::string const signal_name{signal_name_cstr ? signal_name_cstr : ""};
 
-    if (signal_name == "Activity")
-    {
-        int32_t activity_type;
-        g_variant_get(parameters, "(i)", &activity_type);
-        user_activity_handler(user_activity_type_from_dbus_value(activity_type));
-    }
+    if (signal_name == "Active")
+        lock_handler(repowerd::LockState::active);
+    else if (signal_name == "Inactive")
+        lock_handler(repowerd::LockState::inactive);
 }

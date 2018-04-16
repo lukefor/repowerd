@@ -38,20 +38,20 @@ struct UnityPowerButtonDBusClient : rt::DBusClient
     UnityPowerButtonDBusClient(std::string const& dbus_address)
         : rt::DBusClient{
             dbus_address,
-            "com.canonical.Unity.PowerButton",
-            "/com/canonical/Unity/PowerButton"}
+            "org.thinkglobally.Gemian.PowerButton",
+            "/org/thinkglobally/Gemian/PowerButton"}
     {
-        connection.request_name("com.canonical.Unity.PowerButton");
+        connection.request_name("org.thinkglobally.Gemian.PowerButton");
     }
 
     void emit_power_button_press()
     {
-        emit_signal("com.canonical.Unity.PowerButton", "Press", nullptr);
+        emit_signal("org.thinkglobally.Gemian.PowerButton", "Press", nullptr);
     }
 
     void emit_power_button_release()
     {
-        emit_signal("com.canonical.Unity.PowerButton", "Release", nullptr);
+        emit_signal("org.thinkglobally.Gemian.PowerButton", "Release", nullptr);
     }
 
     repowerd::HandlerRegistration register_long_press_handler(
@@ -60,9 +60,9 @@ struct UnityPowerButtonDBusClient : rt::DBusClient
         return event_loop.register_signal_handler(
             connection,
             nullptr,
-            "com.canonical.Unity.PowerButton",
+            "org.thinkglobally.Gemian.PowerButton",
             "LongPress",
-            "/com/canonical/Unity/PowerButton",
+            "/org/thinkglobally/Gemian/PowerButton",
             [func] (
                 GDBusConnection* /*connection*/,
                 gchar const* /*sender*/,

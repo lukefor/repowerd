@@ -32,9 +32,9 @@ namespace
     char const* const dbus_session_interface = "org.freedesktop.login1.Session";
 
 //Swap this to whatever signals can be monitored for external HDMI monitor availability
-    char const* const x11_display_bus_name = "org.thinkglobally.gemian.Display";
-    char const* const x11_display_object_path = "/org/thinglgoally/gemian/Display";
-    char const* const x11_display_interface_name = "org.thinglgoally.gemian.Display";
+    char const* const x11_display_bus_name = "org.thinkglobally.Gemian.Display";
+    char const* const x11_display_object_path = "/org/thinkglobally/Gemian/Display";
+    char const* const x11_display_interface_name = "org.thinkglobally.Gemian.Display";
     char const* const log_tag = "X11Display";
 
     std::string filter_to_str(repowerd::DisplayPowerControlFilter filter)

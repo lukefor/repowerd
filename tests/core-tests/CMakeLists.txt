@@ -23,6 +23,7 @@ add_executable(
     fake_client_requests.cpp
     fake_client_settings.cpp
     fake_lid.cpp
+    fake_lock.cpp
     fake_notification_service.cpp
     fake_power_button.cpp
     fake_power_source.cpp
@@ -42,6 +43,7 @@ add_executable(
     test_fake_timer.cpp
     test_handler_registration.cpp
     test_lid.cpp
+    test_lock.cpp
     test_modem_power_control.cpp
     test_notification.cpp
     test_performance_booster.cpp

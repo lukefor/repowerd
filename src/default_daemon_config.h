@@ -37,6 +37,7 @@ class UnityScreenService;
 class UnityPowerButton;
 class UnityDisplay;
 class X11Display;
+class X11Lock;
 class UPowerPowerSourceAndLid;
 class WakeupService;
 
@@ -50,6 +51,7 @@ public:
     std::shared_ptr<DisplayPowerControl> the_display_power_control() override;
     std::shared_ptr<DisplayPowerEventSink> the_display_power_event_sink() override;
     std::shared_ptr<Lid> the_lid() override;
+    std::shared_ptr<Lock> the_lock() override;
     std::shared_ptr<Log> the_log() override;
     std::shared_ptr<Exec> the_exec() override;
     std::shared_ptr<ModemPowerControl> the_modem_power_control() override;
@@ -80,6 +82,7 @@ public:
     std::shared_ptr<TemporarySuspendInhibition> the_temporary_suspend_inhibition();
     std::shared_ptr<UnityDisplay> the_unity_display();
     std::shared_ptr<X11Display> the_x11_display();
+    std::shared_ptr<X11Lock> the_x11_lock();
     std::shared_ptr<UnityScreenService> the_unity_screen_service();
     std::shared_ptr<UnityPowerButton> the_unity_power_button();
     std::shared_ptr<UPowerPowerSourceAndLid> the_upower_power_source_and_lid();
@@ -111,6 +114,7 @@ private:
     std::shared_ptr<TemporarySuspendInhibition> temporary_suspend_inhibition;
     std::shared_ptr<UnityDisplay> unity_display;
     std::shared_ptr<X11Display> x11_display;
+    std::shared_ptr<X11Lock> x11_lock;
     std::shared_ptr<UnityPowerButton> unity_power_button;
     std::shared_ptr<UnityScreenService> unity_screen_service;
     std::shared_ptr<UPowerPowerSourceAndLid> upower_power_source_and_lid;

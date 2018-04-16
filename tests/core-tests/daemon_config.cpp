@@ -26,6 +26,7 @@
 #include "mock_display_power_control.h"
 #include "mock_display_power_event_sink.h"
 #include "fake_lid.h"
+#include "fake_lock.h"
 #include "fake_log.h"
 #include "fake_exec.h"
 #include "mock_modem_power_control.h"
@@ -79,6 +80,11 @@ std::shared_ptr<repowerd::DisplayPowerEventSink> rt::DaemonConfig::the_display_p
 std::shared_ptr<repowerd::Lid> rt::DaemonConfig::the_lid()
 {
     return the_fake_lid();
+}
+
+std::shared_ptr<repowerd::Lock> rt::DaemonConfig::the_lock()
+{
+    return the_fake_lock();
 }
 
 std::shared_ptr<repowerd::Log> rt::DaemonConfig::the_log()
@@ -221,6 +227,14 @@ std::shared_ptr<rt::FakeLid> rt::DaemonConfig::the_fake_lid()
         fake_lid = std::make_shared<FakeLid>();
 
     return fake_lid;
+}
+
+std::shared_ptr<rt::FakeLock> rt::DaemonConfig::the_fake_lock()
+{
+    if (!fake_lock)
+        fake_lock = std::make_shared<FakeLock>();
+
+    return fake_lock;
 }
 
 std::shared_ptr<rt::FakeLog> rt::DaemonConfig::the_fake_log()

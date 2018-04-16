@@ -47,6 +47,7 @@
 #include "adapters/ubuntu_proximity_sensor.h"
 #include "adapters/unity_display.h"
 #include "adapters/x11_display.h"
+#include "adapters/x11_lock.h"
 #include "adapters/unity_power_button.h"
 #include "adapters/unity_screen_service.h"
 #include "adapters/unity_user_activity.h"
@@ -542,6 +543,12 @@ repowerd::DefaultDaemonConfig::the_temporary_suspend_inhibition()
     return temporary_suspend_inhibition;
 }
 
+std::shared_ptr<repowerd::Lock>
+repowerd::DefaultDaemonConfig::the_lock()
+{
+    return the_x11_lock();
+}
+
 std::shared_ptr<repowerd::Log>
 repowerd::DefaultDaemonConfig::the_log()
 {
@@ -592,6 +599,18 @@ repowerd::DefaultDaemonConfig::the_x11_display()
             the_dbus_bus_address());
     }
     return x11_display;
+}
+
+std::shared_ptr<repowerd::X11Lock>
+repowerd::DefaultDaemonConfig::the_x11_lock()
+{
+    if (!x11_lock)
+    {
+        x11_lock = std::make_shared<X11Lock>(
+            the_log(),
+            the_dbus_bus_address());
+    }
+    return x11_lock;
 }
 
 std::shared_ptr<repowerd::UnityScreenService>

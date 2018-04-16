@@ -22,9 +22,9 @@
 namespace
 {
 auto const null_handler = [](repowerd::PowerButtonState){};
-char const* const dbus_power_button_name = "com.canonical.Unity.PowerButton";
-char const* const dbus_power_button_path = "/com/canonical/Unity/PowerButton";
-char const* const dbus_power_button_interface = "com.canonical.Unity.PowerButton";
+char const* const dbus_power_button_name = "org.thinkglobally.Gemian.PowerButton";
+char const* const dbus_power_button_path = "/org/thinkglobally/Gemian/PowerButton";
+char const* const dbus_power_button_interface = "org.thinkglobally.Gemian.PowerButton";
 }
 
 repowerd::UnityPowerButton::UnityPowerButton(

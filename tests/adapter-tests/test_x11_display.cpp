@@ -47,7 +47,7 @@ namespace
 
 char const* const x11_display_service_introspection = R"(
 <node>
-  <interface name='org.thinkglobally.gemian.Display'>
+  <interface name='org.thinkglobally.Gemian.Display'>
     <method name='TurnOn'>
       <arg type='s' name='filter' direction='in'/>
     </method>
@@ -62,10 +62,10 @@ class FakeX11DisplayDBusService
 {
 public:
     FakeX11DisplayDBusService(std::string const& bus_address) : dbus_connection{bus_address}, dbus_event_loop{"FakeX11Display"} {
-        dbus_connection.request_name("org.thinkglobally.gemian.Display");
+        dbus_connection.request_name("org.thinkglobally.Gemian.Display");
         x11_display_handler_registation = dbus_event_loop.register_object_handler(
                 dbus_connection,
-                "/org/thinkglobally/gemian/Display",
+                "/org/thinkglobally/Gemian/Display",
                 x11_display_service_introspection,
                 [this](
                         GDBusConnection *connection,
@@ -89,11 +89,11 @@ public:
         g_dbus_connection_emit_signal(
                 dbus_connection,
                 nullptr,
-                "/org/thinkglobally/gemian/Display",
+                "/org/thinkglobally/Gemian/Display",
                 "org.freedesktop.DBus.Properties",
                 "PropertiesChanged",
                 g_variant_new_parsed(
-                        "(@s 'org.thinkglobally.gemian.Display',"
+                        "(@s 'org.thinkglobally.Gemian.Display',"
                         " @a{sv} { 'ActiveOutputs' : <(%i,%i)> },"
                         " @as [])",
                         internal,
@@ -170,7 +170,6 @@ struct AX11Display : testing::Test
     rt::DBusBus bus;
     rt::FakeLog fake_log;
     rt::FakeExec fake_exec;
-    FakeX11DisplayDBusService service{bus.address()};
     repowerd::X11Display x11_display{
         rt::fake_shared(fake_log),
         rt::fake_shared(fake_exec),

@@ -51,6 +51,9 @@ public:
         PowerAction power_action,
         PowerSupply power_supply) override;
 
+    void handle_lock_active() override;
+    void handle_lock_inactive() override;
+
     void handle_no_notification() override;
     void handle_notification() override;
 
@@ -183,6 +186,7 @@ private:
     bool autobrightness_enabled;
     double normal_brightness_value;
     bool lid_closed;
+    bool lock_active;
     bool suspend_allowed;
     bool suspend_pending;
 };

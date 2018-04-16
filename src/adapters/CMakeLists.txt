@@ -58,7 +58,8 @@ set(
     upower_power_source_and_lid.cpp
     x11_display.cpp
     null_exec.cpp
-    sys_exec.cpp)
+    sys_exec.cpp
+    x11_lock.cpp)
 
 add_library(
     repowerd-adapters STATIC

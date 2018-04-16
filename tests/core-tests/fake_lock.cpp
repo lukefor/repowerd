@@ -1,5 +1,6 @@
 /*
  * Copyright © 2016 Canonical Ltd.
+ * Copyright © 2018 Gemian
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 3,
@@ -14,25 +15,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by: Alexandros Frantzis <alexandros.frantzis@canonical.com>
+ * Modified by: Adam Boardman <adamboardman@gmail.com>
  */
 
-#pragma once
+#include "fake_lock.h"
 
-#include "src/core/display_power_control.h"
+namespace rt = repowerd::test;
 
-#include <gmock/gmock.h>
-
-namespace repowerd
+void rt::FakeLock::start_processing()
 {
-namespace test
-{
-
-class MockDisplayPowerControl : public DisplayPowerControl
-{
-public:
-    MOCK_METHOD1(turn_on, void(DisplayPowerControlFilter));
-    MOCK_METHOD2(turn_off, void(DisplayPowerControlFilter, bool));
-};
-
+    mock.start_processing();
 }
+
+repowerd::HandlerRegistration rt::FakeLock::register_lock_handler(
+    LockHandler const& handler)
+{
+    mock.register_lock_handler(handler);
+    this->handler = handler;
+    return HandlerRegistration{
+        [this]
+        {
+            mock.unregister_lock_handler();
+            this->handler = [](LockState){};
+        }};
+}
+
+void rt::FakeLock::active()
+{
+    handler(LockState::active);
+}
+
+void rt::FakeLock::inactive()
+{
+    handler(LockState::inactive);
 }
