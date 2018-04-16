@@ -83,6 +83,7 @@ struct AClientSetting : rt::AcceptanceTest, WithParamInterface<repowerd::PowerSu
 TEST_P(AClientSetting,
        for_display_off_timeout_is_used_on_matching_power_supply)
 {
+    lock_active();
     client_setting_set_inactivity_behavior(
         repowerd::PowerAction::display_off,
         power_supply,
@@ -104,6 +105,7 @@ TEST_P(AClientSetting,
 TEST_P(AClientSetting,
        for_display_off_timeout_is_not_used_on_non_matching_power_supply)
 {
+    lock_active();
     client_setting_set_inactivity_behavior(
         repowerd::PowerAction::display_off,
         power_supply,
@@ -125,6 +127,7 @@ TEST_P(AClientSetting,
 TEST_P(AClientSetting,
        for_display_off_timeout_reschedules_timeout_on_matching_power_supply)
 {
+    lock_active();
     apply_power_supply(power_supply);
     turn_off_display();
 
@@ -148,6 +151,7 @@ TEST_P(AClientSetting,
 TEST_P(AClientSetting,
        for_display_off_timeout_does_not_reschedule_timeout_on_non_matching_power_supply)
 {
+    lock_active();
     apply_power_supply(power_supply);
     turn_off_display();
 
@@ -167,6 +171,7 @@ TEST_P(AClientSetting,
 TEST_P(AClientSetting,
        for_display_off_timeout_is_used_when_switching_to_matching_power_supply)
 {
+    lock_active();
     apply_power_supply(other(power_supply));
     turn_off_display();
 
@@ -192,6 +197,7 @@ TEST_P(AClientSetting,
 TEST_P(AClientSetting,
        for_display_off_timeout_is_used_when_performing_user_activity_after_switching_to_matching_power_supply)
 {
+    lock_active();
     apply_power_supply(other(power_supply));
     turn_off_display();
 
@@ -227,6 +233,7 @@ TEST_P(AClientSetting,
     add_compatible_session("c0", pid);
     switch_to_session("c0");
 
+    lock_active();
     client_setting_set_inactivity_behavior(
         repowerd::PowerAction::display_off,
         power_supply,
@@ -263,6 +270,7 @@ TEST_P(AClientSetting, for_display_off_inactivity_behavior_is_logged)
 TEST_P(AClientSetting,
        for_suspend_timeout_is_used_on_matching_power_supply)
 {
+    lock_active();
     apply_power_supply(power_supply);
     turn_off_display();
 
@@ -289,6 +297,7 @@ TEST_P(AClientSetting,
 TEST_P(AClientSetting,
        for_infinite_suspend_timeout_disables_suspend_on_matching_power_supply)
 {
+    lock_active();
     apply_power_supply(power_supply);
     turn_off_display();
 
@@ -312,6 +321,7 @@ TEST_P(AClientSetting,
 TEST_P(AClientSetting,
        for_infinite_suspend_timeout_is_used_when_changing_to_matching_power_supply)
 {
+    lock_active();
     apply_power_supply(other(power_supply));
     turn_off_display();
 
@@ -345,6 +355,7 @@ TEST_P(AClientSetting,
     add_compatible_session("c0", pid);
     switch_to_session("c0");
 
+    lock_active();
     client_setting_set_inactivity_behavior(
         repowerd::PowerAction::suspend,
         power_supply,

@@ -38,7 +38,7 @@ struct ALid : rt::AcceptanceTest
 
 }
 
-TEST_F(ALid, closed_turns_off_display_beforing_suspending)
+TEST_F(ALid, closing_turns_off_display_before_suspending)
 {
     turn_on_display();
 
@@ -49,7 +49,7 @@ TEST_F(ALid, closed_turns_off_display_beforing_suspending)
     close_lid();
 }
 
-TEST_F(ALid, closed_suspends_regardless_of_suspend_disallowances)
+TEST_F(ALid, closing_suspends_regardless_of_suspend_disallowances)
 {
     turn_on_display();
 
@@ -83,7 +83,7 @@ TEST_F(ALid, opened_is_logged)
     EXPECT_TRUE(log_contains_line({"lid_open"}));
 }
 
-TEST_F(ALid, closed_turns_off_internal_display_but_does_not_suspend_if_external_displays_active)
+TEST_F(ALid, closing_turns_off_internal_display_but_does_not_suspend_if_external_displays_active)
 {
     activate_external_display();
     turn_on_display();
@@ -109,6 +109,7 @@ TEST_F(ALid, opened_turns_on_internal_display_if_not_suspended)
 
 TEST_F(ALid, while_closed_prevents_internal_display_from_turning_on)
 {
+    lock_active();
     activate_external_display();
     turn_on_display();
 

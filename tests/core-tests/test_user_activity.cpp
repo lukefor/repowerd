@@ -35,8 +35,17 @@ struct AUserActivity : rt::AcceptanceTest
 
 }
 
+TEST_F(AUserActivity, lock_inactive_timeout_ignored)
+{
+    lock_inactive();
+
+    expect_no_display_power_change();
+    advance_time_by(user_inactivity_normal_display_off_timeout);
+}
+
 TEST_F(AUserActivity, not_performed_turns_off_display_after_timeout)
 {
+    lock_active();
     turn_on_display();
 
     expect_display_turns_off();
@@ -45,6 +54,7 @@ TEST_F(AUserActivity, not_performed_turns_off_display_after_timeout)
 
 TEST_F(AUserActivity, not_performed_dims_display_after_timeout_timeout)
 {
+    lock_active();
     turn_on_display();
 
     expect_display_dims();
@@ -53,6 +63,7 @@ TEST_F(AUserActivity, not_performed_dims_display_after_timeout_timeout)
 
 TEST_F(AUserActivity, not_performed_does_not_turn_off_display_prematurely)
 {
+    lock_active();
     turn_on_display();
 
     expect_no_display_power_change();
@@ -61,6 +72,7 @@ TEST_F(AUserActivity, not_performed_does_not_turn_off_display_prematurely)
 
 TEST_F(AUserActivity, not_performed_does_not_dim_display_prematurely)
 {
+    lock_active();
     turn_on_display();
 
     expect_no_display_brightness_change();
@@ -69,6 +81,7 @@ TEST_F(AUserActivity, not_performed_does_not_dim_display_prematurely)
 
 TEST_F(AUserActivity, not_performed_has_no_effect_after_display_is_turned_off)
 {
+    lock_active();
     turn_on_display();
     turn_off_display();
 
@@ -88,6 +101,7 @@ TEST_F(AUserActivity, extending_power_state_has_no_effect_when_display_is_off)
 
 TEST_F(AUserActivity, extending_power_state_resets_display_off_timer)
 {
+    lock_active();
     turn_on_display();
 
     expect_no_display_power_change();
@@ -102,6 +116,7 @@ TEST_F(AUserActivity, extending_power_state_resets_display_off_timer)
 
 TEST_F(AUserActivity, extending_power_state_brightens_dim_display)
 {
+    lock_active();
     turn_on_display();
 
     expect_display_dims();
@@ -114,6 +129,7 @@ TEST_F(AUserActivity, extending_power_state_brightens_dim_display)
 
 TEST_F(AUserActivity, changing_power_state_turns_on_display_immediately)
 {
+    lock_active();
     expect_display_turns_on();
 
     perform_user_activity_changing_power_state();
@@ -129,6 +145,7 @@ TEST_F(AUserActivity, changing_power_state_does_not_turn_on_display_if_it_is_alr
 
 TEST_F(AUserActivity, changing_power_state_resets_display_off_timer)
 {
+    lock_active();
     turn_on_display();
 
     expect_no_display_power_change();
@@ -143,6 +160,7 @@ TEST_F(AUserActivity, changing_power_state_resets_display_off_timer)
 
 TEST_F(AUserActivity, changing_power_state_brightens_dim_display)
 {
+    lock_active();
     turn_on_display();
 
     expect_display_dims();
@@ -155,6 +173,7 @@ TEST_F(AUserActivity, changing_power_state_brightens_dim_display)
 
 TEST_F(AUserActivity, event_notifies_of_display_power_change)
 {
+    lock_active();
     expect_display_power_on_notification(
         repowerd::DisplayPowerChangeReason::activity);
     perform_user_activity_changing_power_state();

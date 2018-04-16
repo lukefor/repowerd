@@ -111,6 +111,8 @@ struct AcceptanceTestBase
     void perform_user_activity_changing_power_state();
     void press_power_button();
     void release_power_button();
+    void lock_active();
+    void lock_inactive();
     void set_proximity_state_far();
     void set_proximity_state_near();
     void add_compatible_session(std::string const& session_id, pid_t pid);

@@ -51,6 +51,7 @@ TEST_F(APowerSource, change_turns_on_display_for_reduced_timeout)
 
 TEST_F(APowerSource, change_brightens_display_if_it_is_already_on)
 {
+    lock_active();
     turn_on_display();
 
     expect_display_dims();
@@ -64,6 +65,7 @@ TEST_F(APowerSource, change_brightens_display_if_it_is_already_on)
 
 TEST_F(APowerSource, change_reschedules_timeout_if_display_is_already_on)
 {
+    lock_active();
     turn_on_display();
 
     expect_no_display_power_change();

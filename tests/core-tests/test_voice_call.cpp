@@ -52,6 +52,7 @@ TEST_F(AVoiceCall, turns_on_display_with_normal_timeout)
 
 TEST_F(AVoiceCall, brightens_display_if_it_is_already_on)
 {
+    lock_active();
     turn_on_display();
 
     expect_display_dims();
@@ -65,6 +66,7 @@ TEST_F(AVoiceCall, brightens_display_if_it_is_already_on)
 
 TEST_F(AVoiceCall, extends_timeout_if_display_is_already_on)
 {
+    lock_active();
     turn_on_display();
 
     advance_time_by(user_inactivity_normal_display_off_timeout - 1ms);
@@ -93,6 +95,7 @@ TEST_F(AVoiceCall, enables_proximity_events)
 
 TEST_F(AVoiceCall, when_done_turns_off_display_with_reduced_timeout)
 {
+    lock_active();
     emit_active_call();
     advance_time_by(user_inactivity_normal_display_off_timeout);
 
@@ -184,6 +187,7 @@ TEST_F(AVoiceCall,
 TEST_F(AVoiceCall,
        when_done_enables_one_off_proximity_far_event_if_display_is_off)
 {
+    lock_active();
     turn_on_display();
 
     expect_display_turns_off();

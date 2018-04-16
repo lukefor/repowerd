@@ -74,6 +74,7 @@ TEST(ATreatPowerButtonAsUserActivityOption,
 
     test.expect_display_turns_on();
 
+    test.lock_active();
     test.press_power_button();
     test.release_power_button();
 

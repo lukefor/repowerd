@@ -32,145 +32,32 @@ struct ALock : rt::AcceptanceTest
 
 }
 
-//TODO: Change to a set of lock related tests
-
-TEST_F(ALock, press_turns_on_display)
+TEST_F(ALock, lock_inactive_display_turns_on)
 {
     expect_display_turns_on();
 
-    press_power_button();
+    lock_inactive();
 }
 
-TEST_F(ALock, release_after_press_that_turns_on_display_does_nothing)
-{
-    expect_display_turns_on();
-
-    press_power_button();
-    release_power_button();
-}
-
-TEST_F(ALock, stray_release_is_ignored_when_display_is_off)
-{
-    expect_no_display_power_change();
-
-    release_power_button();
-}
-
-TEST_F(ALock, stray_release_is_ignored_when_display_is_on)
-{
-    turn_on_display();
-
-    expect_no_display_power_change();
-
-    release_power_button();
-}
-
-TEST_F(ALock, press_does_nothing_if_display_is_already_on)
-{
-    turn_on_display();
-
-    expect_no_display_power_change();
-
-    press_power_button();
-}
-
-TEST_F(ALock, short_press_turns_off_display_it_is_already_on)
+TEST_F(ALock, lock_active_display_turns_off)
 {
     turn_on_display();
 
     expect_display_turns_off();
 
-    press_power_button();
-    release_power_button();
+    lock_active();
 }
 
-TEST_F(ALock, long_press_turns_on_display_and_notifies_if_display_is_off)
+TEST_F(ALock, lock_active_is_logged)
 {
-    expect_display_turns_on();
-    expect_long_press_notification();
+    lock_active();
 
-    press_power_button();
-    advance_time_by(power_button_long_press_timeout);
+    EXPECT_TRUE(log_contains_line({"handle_lock_active()"}));
 }
 
-TEST_F(ALock, long_press_notifies_if_display_is_on)
+TEST_F(ALock, lock_inactive_is_logged)
 {
-    turn_on_display();
+    lock_inactive();
 
-    expect_no_display_power_change();
-    expect_long_press_notification();
-
-    press_power_button();
-    advance_time_by(power_button_long_press_timeout);
-}
-
-TEST_F(ALock, short_press_can_change_display_power_state_after_long_press)
-{
-    turn_on_display();
-
-    expect_long_press_notification();
-    press_power_button();
-    advance_time_by(power_button_long_press_timeout);
-    release_power_button();
-    verify_expectations();
-
-    expect_display_turns_off();
-    press_power_button();
-    release_power_button();
-    verify_expectations();
-
-    expect_display_turns_on();
-    press_power_button();
-    release_power_button();
-    verify_expectations();
-}
-
-TEST_F(ALock, event_notifies_of_display_power_change)
-{
-    expect_display_power_on_notification(
-        repowerd::DisplayPowerChangeReason::power_button);
-
-    press_power_button();
-    release_power_button();
-    verify_expectations();
-
-    expect_display_power_off_notification(
-        repowerd::DisplayPowerChangeReason::power_button);
-
-    press_power_button();
-    release_power_button();
-}
-
-TEST_F(ALock,
-       press_turns_on_display_and_keeps_it_on_forever_if_inactivity_timeout_is_infinite)
-{
-    client_request_set_inactivity_timeout(infinite_timeout);
-
-    turn_on_display();
-
-    expect_no_display_power_change();
-    expect_no_display_brightness_change();
-    advance_time_by(1h);
-}
-
-TEST_F(ALock, press_is_logged)
-{
-    press_power_button();
-
-    EXPECT_TRUE(log_contains_line({"power_button_press"}));
-}
-
-TEST_F(ALock, release_is_logged)
-{
-    release_power_button();
-
-    EXPECT_TRUE(log_contains_line({"power_button_release"}));
-}
-
-TEST_F(ALock, long_press_is_logged)
-{
-    press_power_button();
-    advance_time_by(power_button_long_press_timeout);
-
-    EXPECT_TRUE(log_contains_line({"long_press"}));
+    EXPECT_TRUE(log_contains_line({"handle_lock_inactive()"}));
 }

@@ -72,6 +72,7 @@ TEST_F(AClientRequest, to_disable_inactivity_timeout_does_not_affect_power_butto
 
 TEST_F(AClientRequest, to_enable_inactivity_timeout_turns_off_display_after_normal_timeout_if_inactivity_timeout_has_expired)
 {
+    lock_active();
     turn_on_display();
 
     expect_no_display_power_change();
@@ -91,6 +92,7 @@ TEST_F(AClientRequest, to_enable_inactivity_timeout_turns_off_display_after_norm
 TEST_F(AClientRequest,
        to_enable_inactivity_timeout_turns_off_display_extends_existing_inactivity_timeout)
 {
+    lock_active();
     turn_on_display();
 
     expect_no_display_power_change();
@@ -108,6 +110,7 @@ TEST_F(AClientRequest, to_set_inactivity_timeout_affects_display_off_timeout)
 {
     auto const display_off_timeout = user_inactivity_normal_display_off_timeout + 10s;
 
+    lock_active();
     client_request_set_inactivity_timeout(display_off_timeout);
 
     turn_on_display();
@@ -126,6 +129,7 @@ TEST_F(AClientRequest, to_set_inactivity_timeout_affects_display_dim_timeout)
     auto const display_dim_timeout =
         display_off_timeout - user_inactivity_normal_display_dim_duration;
 
+    lock_active();
     client_request_set_inactivity_timeout(display_off_timeout);
 
     turn_on_display();
@@ -188,6 +192,7 @@ TEST_F(AClientRequest,
 
 TEST_F(AClientRequest, to_set_non_positive_inactivity_timeout_is_ignrored)
 {
+    lock_active();
     client_request_set_inactivity_timeout(-1ms);
     client_request_set_inactivity_timeout(0ms);
 
@@ -206,6 +211,8 @@ TEST_F(AClientRequest, to_disable_inactivity_timeout_works_until_all_requests_ar
     std::string const inactivity_id1{"1"};
     std::string const inactivity_id2{"2"};
     std::string const inactivity_id3{"3"};
+
+    lock_active();
 
     expect_display_turns_on();
     client_request_disable_inactivity_timeout(inactivity_id1);
@@ -258,6 +265,7 @@ TEST_F(AClientRequest, to_set_brightness_value_works)
 
 TEST_F(AClientRequest, to_disallow_suspend_works)
 {
+    lock_active();
     turn_on_display();
 
     client_setting_set_inactivity_behavior(
@@ -274,6 +282,7 @@ TEST_F(AClientRequest, to_disallow_suspend_works)
 
 TEST_F(AClientRequest, to_allow_suspend_suspends_immediately_if_timeout_expired)
 {
+    lock_active();
     turn_on_display();
 
     client_setting_set_inactivity_behavior(
@@ -294,6 +303,7 @@ TEST_F(AClientRequest, to_allow_suspend_suspends_immediately_if_timeout_expired)
 
 TEST_F(AClientRequest, to_allow_suspend_does_not_suspend_immediately_if_timeout_not_expired)
 {
+    lock_active();
     turn_on_display();
 
     client_setting_set_inactivity_behavior(

@@ -110,6 +110,7 @@ TEST_F(ASystemPowerControl,
 TEST_F(ASystemPowerControl,
        removal_of_suspend_inhibition_is_respected_for_automatic_suspend_due_to_inactivity)
 {
+    lock_active();
     turn_on_display();
     client_request_disallow_suspend();
 
@@ -144,6 +145,7 @@ TEST_F(ASystemPowerControl, automatic_suspend_is_disallowed_before_display_is_tu
 
 TEST_F(ASystemPowerControl, system_disallow_suspend_inhibits_suspend_due_to_inactivity)
 {
+    lock_active();
     turn_on_display();
 
     client_setting_set_inactivity_behavior(

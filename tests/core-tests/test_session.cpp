@@ -204,6 +204,7 @@ TEST_F(ASession,
 
 TEST_F(ASession, while_inactive_tracks_inactivity_timeout_requests)
 {
+    lock_active();
     switch_to_session(incompatible(0));
 
     auto const timeout = 1000s;
@@ -228,6 +229,7 @@ TEST_F(ASession, while_inactive_tracks_inactivity_timeout_requests)
 
 TEST_F(ASession, while_inactive_tracks_inactivity_timeout_requests_1)
 {
+    lock_active();
     switch_to_session(incompatible(0));
 
     auto const timeout = 1000s;
@@ -323,6 +325,7 @@ TEST_F(ASession,
 
 TEST_F(ASession, while_inactive_tracks_notification_expiration)
 {
+    lock_active();
     emit_notification();
 
     switch_to_session(incompatible(0));

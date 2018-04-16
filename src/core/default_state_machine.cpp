@@ -319,10 +319,14 @@ void repowerd::DefaultStateMachine::handle_lid_open()
 
 void repowerd::DefaultStateMachine::handle_lock_active()
 {
-    log->log(log_tag, "handle_lock_closed()");
+    log->log(log_tag, "handle_lock_active()");
 
     lock_active = true;
 
+    if (display_power_mode != DisplayPowerMode::off)
+    {
+        turn_off_display(DisplayPowerChangeReason::unknown);
+    }
 }
 
 void repowerd::DefaultStateMachine::handle_lock_inactive()
@@ -331,6 +335,20 @@ void repowerd::DefaultStateMachine::handle_lock_inactive()
 
     lock_active = false;
 
+    if (display_power_mode == DisplayPowerMode::on)
+    {
+        if (lid_closed) {
+            display_power_control->turn_on(DisplayPowerControlFilter::external);
+        } else {
+            display_power_control->turn_on(DisplayPowerControlFilter::all);
+        }
+        brighten_display();
+        display_power_mode_reason = DisplayPowerChangeReason::activity;
+    }
+    else
+    {
+        turn_on_display_with_normal_timeout(DisplayPowerChangeReason::activity);
+    }
 }
 
 void repowerd::DefaultStateMachine::handle_set_lid_behavior(
@@ -903,7 +921,7 @@ bool repowerd::DefaultStateMachine::is_inactivity_timeout_allowed()
     auto const client = inactivity_timeout_allowances[InactivityTimeoutAllowance::client];
     auto const notification = inactivity_timeout_allowances[InactivityTimeoutAllowance::notification];
 
-    return notification && client;
+    return notification && client && lock_active;
 }
 
 bool repowerd::DefaultStateMachine::is_inactivity_timeout_application_allowed()

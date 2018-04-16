@@ -27,6 +27,7 @@
 #include "fake_client_requests.h"
 #include "fake_client_settings.h"
 #include "fake_lid.h"
+#include "fake_lock.h"
 #include "fake_log.h"
 #include "fake_notification_service.h"
 #include "fake_power_button.h"
@@ -432,6 +433,18 @@ void rt::AcceptanceTestBase::press_power_button()
 void rt::AcceptanceTestBase::release_power_button()
 {
     config.the_fake_power_button()->release();
+    daemon.flush();
+}
+
+void rt::AcceptanceTestBase::lock_active()
+{
+    config.the_fake_lock()->active();
+    daemon.flush();
+}
+
+void rt::AcceptanceTestBase::lock_inactive()
+{
+    config.the_fake_lock()->inactive();
     daemon.flush();
 }
 

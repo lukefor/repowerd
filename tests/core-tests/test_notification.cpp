@@ -86,6 +86,7 @@ TEST_F(ANotification, does_not_dim_display_after_timeout)
 
 TEST_F(ANotification, extends_existing_shorter_timeout)
 {
+    lock_active();
     turn_on_display();
     advance_time_by(user_inactivity_normal_display_off_timeout - 1ms);
 
@@ -136,6 +137,7 @@ TEST_F(ANotification, does_not_schedule_inactivity_timeout_when_proximity_is_nea
 
 TEST_F(ANotification, timeout_is_extended_by_user_activity)
 {
+    lock_active();
     expect_display_turns_on();
     emit_notification();
     emit_notification_done();
@@ -164,6 +166,7 @@ TEST_F(ANotification, allows_power_button_to_turn_off_display)
 
 TEST_F(ANotification, brightens_dim_display)
 {
+    lock_active();
     turn_on_display();
 
     expect_display_dims();
@@ -276,6 +279,7 @@ TEST_F(ANotification, event_notifies_of_display_power_change)
 
 TEST_F(ANotification, turns_display_on_for_reduced_timeout_if_proximity_uncovered)
 {
+    lock_active();
     set_proximity_state_near();
 
     emit_notification();
