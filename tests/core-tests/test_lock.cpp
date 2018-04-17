@@ -48,6 +48,19 @@ TEST_F(ALock, lock_active_display_turns_off)
     lock_active();
 }
 
+TEST_F(ALock, lock_active_lid_closed_user_activity_display_stays_off)
+{
+    close_lid();
+    lock_active();
+
+    perform_user_activity_changing_power_state();
+    perform_user_activity_extending_power_state();
+
+    expect_no_display_power_change();
+    expect_no_display_brightness_change();
+}
+
+
 TEST_F(ALock, lock_active_is_logged)
 {
     lock_active();
