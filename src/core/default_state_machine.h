@@ -57,7 +57,7 @@ public:
     void handle_no_notification() override;
     void handle_notification() override;
 
-    void handle_power_button_press() override;
+    void handle_power_button_press(PowerButtonState state) override;
     void handle_power_button_release() override;
 
     void handle_power_source_change() override;

@@ -159,7 +159,7 @@ TEST_F(ANotification, allows_power_button_to_turn_off_display)
     verify_expectations();
 
     expect_display_turns_off();
-    press_power_button();
+    press_power_off_button();
     release_power_button();
     verify_expectations();
 }

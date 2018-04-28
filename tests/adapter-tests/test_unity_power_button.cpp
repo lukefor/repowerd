@@ -44,14 +44,24 @@ struct UnityPowerButtonDBusClient : rt::DBusClient
         connection.request_name("org.thinkglobally.Gemian.PowerButton");
     }
 
-    void emit_power_button_press()
+    void emit_power_on_button_press()
     {
-        emit_signal("org.thinkglobally.Gemian.PowerButton", "Press", nullptr);
+        emit_signal("org.thinkglobally.Gemian.PowerButton", "OnPress", nullptr);
     }
 
-    void emit_power_button_release()
+    void emit_power_on_button_release()
     {
-        emit_signal("org.thinkglobally.Gemian.PowerButton", "Release", nullptr);
+        emit_signal("org.thinkglobally.Gemian.PowerButton", "OnRelease", nullptr);
+    }
+
+    void emit_power_sleep_button_press()
+    {
+        emit_signal("org.thinkglobally.Gemian.PowerButton", "SleepPress", nullptr);
+    }
+
+    void emit_power_sleep_button_release()
+    {
+        emit_signal("org.thinkglobally.Gemian.PowerButton", "SleepRelease", nullptr);
     }
 
     repowerd::HandlerRegistration register_long_press_handler(
@@ -109,10 +119,10 @@ TEST_F(AUnityPowerButton, calls_handler_for_power_button_press_signal)
 {
     rt::WaitCondition request_processed;
 
-    EXPECT_CALL(mock_handlers, power_button(repowerd::PowerButtonState::pressed))
+    EXPECT_CALL(mock_handlers, power_button(repowerd::PowerButtonState::onPressed))
         .WillOnce(WakeUp(&request_processed));
 
-    client.emit_power_button_press();
+    client.emit_power_on_button_press();
 
     request_processed.wait_for(default_timeout);
     EXPECT_TRUE(request_processed.woken());
@@ -125,7 +135,7 @@ TEST_F(AUnityPowerButton, calls_handler_for_power_button_release_signal)
     EXPECT_CALL(mock_handlers, power_button(repowerd::PowerButtonState::released))
         .WillOnce(WakeUp(&request_processed));
 
-    client.emit_power_button_release();
+    client.emit_power_on_button_release();
 
     request_processed.wait_for(default_timeout);
     EXPECT_TRUE(request_processed.woken());
@@ -139,8 +149,8 @@ TEST_F(AUnityPowerButton, does_not_calls_unregistered_handlers)
 
     EXPECT_CALL(mock_handlers, power_button(_)).Times(0);
 
-    client.emit_power_button_press();
-    client.emit_power_button_release();
+    client.emit_power_on_button_press();
+    client.emit_power_on_button_release();
 
     // Give some time for dbus signals to be delivered
     std::this_thread::sleep_for(100ms);

@@ -24,8 +24,7 @@
 
 namespace repowerd
 {
-
-enum class PowerButtonState{released, pressed};
+enum class PowerButtonState{released, onPressed, sleepPressed, offPressed};
 using PowerButtonHandler = std::function<void(PowerButtonState)>;
 
 class PowerButton

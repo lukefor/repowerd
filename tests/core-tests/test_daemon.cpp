@@ -34,6 +34,7 @@
 #include "mock_brightness_control.h"
 
 #include "src/core/daemon.h"
+#include "src/core/power_button.h"
 #include "src/core/state_machine.h"
 #include "src/core/state_machine_factory.h"
 
@@ -75,7 +76,7 @@ struct MockStateMachine : public repowerd::StateMachine
     MOCK_METHOD0(handle_lock_active, void());
     MOCK_METHOD0(handle_lock_inactive, void());
 
-    MOCK_METHOD0(handle_power_button_press, void());
+    MOCK_METHOD1(handle_power_button_press, void(repowerd::PowerButtonState));
     MOCK_METHOD0(handle_power_button_release, void());
 
     MOCK_METHOD0(handle_power_source_change, void());
@@ -296,12 +297,20 @@ TEST_F(ADaemon, registers_starts_and_unregisters_power_button_handler)
     testing::Mock::VerifyAndClearExpectations(config.the_fake_power_button().get());
 }
 
-TEST_F(ADaemon, notifies_state_machine_of_power_button_press)
+TEST_F(ADaemon, notifies_state_machine_of_power_on_button_press)
 {
     start_daemon();
 
-    EXPECT_CALL(*config.the_mock_state_machine(), handle_power_button_press());
-    config.the_fake_power_button()->press();
+    EXPECT_CALL(*config.the_mock_state_machine(), handle_power_button_press(repowerd::PowerButtonState::onPressed));
+    config.the_fake_power_button()->onPress();
+}
+
+TEST_F(ADaemon, notifies_state_machine_of_power_sleep_button_press)
+{
+    start_daemon();
+
+    EXPECT_CALL(*config.the_mock_state_machine(), handle_power_button_press(repowerd::PowerButtonState::sleepPressed));
+    config.the_fake_power_button()->sleepPress();
 }
 
 TEST_F(ADaemon, notifies_state_machine_of_power_button_release)
@@ -894,8 +903,8 @@ TEST_F(ADaemon, makes_null_session_active_if_active_is_removed)
     remove_session(
         config.the_fake_session_tracker()->default_session());
 
-    EXPECT_CALL(*config.the_mock_state_machine(), handle_power_button_press()).Times(0);
-    config.the_fake_power_button()->press();
+    EXPECT_CALL(*config.the_mock_state_machine(), handle_power_button_press(_)).Times(0);
+    config.the_fake_power_button()->onPress();
 }
 
 TEST_F(ADaemon, pauses_active_session_before_removing_it)

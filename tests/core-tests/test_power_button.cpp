@@ -36,14 +36,14 @@ TEST_F(APowerButton, press_turns_on_display)
 {
     expect_display_turns_on();
 
-    press_power_button();
+    press_power_on_button();
 }
 
 TEST_F(APowerButton, release_after_press_that_turns_on_display_does_nothing)
 {
     expect_display_turns_on();
 
-    press_power_button();
+    press_power_on_button();
     release_power_button();
 }
 
@@ -69,7 +69,7 @@ TEST_F(APowerButton, press_does_nothing_if_display_is_already_on)
 
     expect_no_display_power_change();
 
-    press_power_button();
+    press_power_on_button();
 }
 
 TEST_F(APowerButton, short_press_turns_off_display_it_is_already_on)
@@ -78,7 +78,7 @@ TEST_F(APowerButton, short_press_turns_off_display_it_is_already_on)
 
     expect_display_turns_off();
 
-    press_power_button();
+    press_power_off_button();
     release_power_button();
 }
 
@@ -87,7 +87,7 @@ TEST_F(APowerButton, long_press_turns_on_display_and_notifies_if_display_is_off)
     expect_display_turns_on();
     expect_long_press_notification();
 
-    press_power_button();
+    press_power_on_button();
     advance_time_by(power_button_long_press_timeout);
 }
 
@@ -98,7 +98,7 @@ TEST_F(APowerButton, long_press_notifies_if_display_is_on)
     expect_no_display_power_change();
     expect_long_press_notification();
 
-    press_power_button();
+    press_power_on_button();
     advance_time_by(power_button_long_press_timeout);
 }
 
@@ -107,18 +107,18 @@ TEST_F(APowerButton, short_press_can_change_display_power_state_after_long_press
     turn_on_display();
 
     expect_long_press_notification();
-    press_power_button();
+    press_power_on_button();
     advance_time_by(power_button_long_press_timeout);
     release_power_button();
     verify_expectations();
 
     expect_display_turns_off();
-    press_power_button();
+    press_power_off_button();
     release_power_button();
     verify_expectations();
 
     expect_display_turns_on();
-    press_power_button();
+    press_power_on_button();
     release_power_button();
     verify_expectations();
 }
@@ -128,14 +128,14 @@ TEST_F(APowerButton, event_notifies_of_display_power_change)
     expect_display_power_on_notification(
         repowerd::DisplayPowerChangeReason::power_button);
 
-    press_power_button();
+    press_power_on_button();
     release_power_button();
     verify_expectations();
 
     expect_display_power_off_notification(
         repowerd::DisplayPowerChangeReason::power_button);
 
-    press_power_button();
+    press_power_off_button();
     release_power_button();
 }
 
@@ -153,7 +153,7 @@ TEST_F(APowerButton,
 
 TEST_F(APowerButton, press_is_logged)
 {
-    press_power_button();
+    press_power_on_button();
 
     EXPECT_TRUE(log_contains_line({"power_button_press"}));
 }
@@ -167,7 +167,7 @@ TEST_F(APowerButton, release_is_logged)
 
 TEST_F(APowerButton, long_press_is_logged)
 {
-    press_power_button();
+    press_power_on_button();
     advance_time_by(power_button_long_press_timeout);
 
     EXPECT_TRUE(log_contains_line({"long_press"}));

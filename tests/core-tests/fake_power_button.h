@@ -34,8 +34,10 @@ public:
 
     HandlerRegistration register_power_button_handler(PowerButtonHandler const& handler) override;
 
-    void press();
     void release();
+    void onPress();
+    void sleepPress();
+    void offPress();
 
     struct Mock
     {

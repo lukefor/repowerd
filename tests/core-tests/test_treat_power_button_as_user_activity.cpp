@@ -75,14 +75,14 @@ TEST(ATreatPowerButtonAsUserActivityOption,
     test.expect_display_turns_on();
 
     test.lock_active();
-    test.press_power_button();
+    test.press_power_on_button();
     test.release_power_button();
 
     test.verify_expectations();
 
     test.expect_no_display_power_change();
 
-    test.press_power_button();
+    test.press_power_on_button();
     test.release_power_button();
     test.advance_time_by(test.user_inactivity_normal_display_off_timeout - 1ms);
 
@@ -105,7 +105,7 @@ TEST(ATreatPowerButtonAsUserActivityOption,
     test.set_proximity_state_near();
     test.expect_display_turns_on();
 
-    test.press_power_button();
+    test.press_power_on_button();
     test.release_power_button();
 }
 
@@ -121,13 +121,13 @@ TEST(ATreatPowerButtonAsUserActivityOption,
 
     test.expect_display_turns_on();
 
-    test.press_power_button();
+    test.press_power_on_button();
     test.release_power_button();
 
     test.verify_expectations();
 
     test.expect_display_turns_off();
 
-    test.press_power_button();
+    test.press_power_sleep_button();
     test.release_power_button();
 }

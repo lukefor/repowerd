@@ -115,15 +115,15 @@ repowerd::Daemon::register_event_handlers()
         power_button->register_power_button_handler(
             [this] (PowerButtonState state)
             {
-                if (state == PowerButtonState::pressed)
+                if (state == PowerButtonState::released)
                 {
                     enqueue_action_to_active_session(
-                        [this] (Session* s) { s->state_machine->handle_power_button_press(); });
+                        [this] (Session* s) { s->state_machine->handle_power_button_release(); });
                 }
-                else if (state == PowerButtonState::released)
+                else
                 {
                     enqueue_action_to_active_session(
-                        [this] (Session* s) { s->state_machine->handle_power_button_release(); } );
+                        [this, state] (Session* s) { s->state_machine->handle_power_button_press(state); });
                 }
             }));
 

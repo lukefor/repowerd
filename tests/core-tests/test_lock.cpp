@@ -60,6 +60,20 @@ TEST_F(ALock, lock_active_lid_closed_user_activity_display_stays_off)
     expect_no_display_brightness_change();
 }
 
+TEST_F(ALock, lock_active_on_button_turns_display_on)
+{
+    open_lid();
+    lock_active();
+
+    verify_expectations();
+
+    press_power_on_button();
+    release_power_button();
+
+//    expect_display_turns_on();
+//
+//    advance_time_by(user_inactivity_normal_display_off_timeout - 1ms);
+}
 
 TEST_F(ALock, lock_active_is_logged)
 {

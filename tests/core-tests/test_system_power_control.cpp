@@ -96,12 +96,12 @@ TEST_F(ASystemPowerControl,
 }
 
 TEST_F(ASystemPowerControl,
-       suspend_inhibition_is_ignored_for_automatic_suspend_due_to_power_key)
+       suspend_inhibition_is_ignored_for_automatic_suspend_due_to_power_off_key)
 {
     turn_on_display();
     client_request_disallow_suspend();
 
-    press_power_button();
+    press_power_off_button();
     release_power_button();
 
     expect_automatic_suspend_is_allowed();
@@ -139,7 +139,7 @@ TEST_F(ASystemPowerControl, automatic_suspend_is_disallowed_before_display_is_tu
     expect_automatic_suspend_disallow();
     expect_display_turns_on();
 
-    press_power_button();
+    press_power_on_button();
     release_power_button();
 }
 

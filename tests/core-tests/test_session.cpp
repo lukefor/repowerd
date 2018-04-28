@@ -340,7 +340,7 @@ TEST_F(ASession, while_inactive_tracks_notification_expiration)
 
 TEST_F(ASession, while_inactive_does_not_track_power_button_long_press)
 {
-    press_power_button();
+    press_power_on_button();
 
     switch_to_session(incompatible(0));
     switch_to_session(default_session_id);

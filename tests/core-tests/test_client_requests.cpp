@@ -66,7 +66,7 @@ TEST_F(AClientRequest, to_disable_inactivity_timeout_does_not_affect_power_butto
     client_request_disable_inactivity_timeout();
 
     expect_display_turns_off();
-    press_power_button();
+    press_power_off_button();
     release_power_button();
 }
 

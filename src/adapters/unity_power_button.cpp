@@ -88,8 +88,16 @@ void repowerd::UnityPowerButton::handle_dbus_signal(
 {
     std::string const signal_name{signal_name_cstr ? signal_name_cstr : ""};
 
-    if (signal_name == "Press")
-        power_button_handler(repowerd::PowerButtonState::pressed);
-    else if (signal_name == "Release")
+    if (signal_name == "OnPress")
+        power_button_handler(repowerd::PowerButtonState::onPressed);
+    else if (signal_name == "SleepPress")
+        power_button_handler(repowerd::PowerButtonState::sleepPressed);
+    else if (signal_name == "OffPress")
+        power_button_handler(repowerd::PowerButtonState::offPressed);
+    else if (signal_name == "OnRelease")
+        power_button_handler(repowerd::PowerButtonState::released);
+    else if (signal_name == "SleepRelease")
+        power_button_handler(repowerd::PowerButtonState::released);
+    else if (signal_name == "OffRelease")
         power_button_handler(repowerd::PowerButtonState::released);
 }

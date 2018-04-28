@@ -44,7 +44,7 @@ TEST_F(APromixitySensor, near_state_allows_display_to_turn_on_due_to_power_butto
     expect_display_turns_on();
 
     set_proximity_state_near();
-    press_power_button();
+    press_power_on_button();
     release_power_button();
 }
 

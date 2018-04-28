@@ -109,7 +109,9 @@ struct AcceptanceTestBase
     void open_lid();
     void perform_user_activity_extending_power_state();
     void perform_user_activity_changing_power_state();
-    void press_power_button();
+    void press_power_on_button();
+    void press_power_sleep_button();
+    void press_power_off_button();
     void release_power_button();
     void lock_active();
     void lock_inactive();

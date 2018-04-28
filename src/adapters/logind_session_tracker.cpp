@@ -296,7 +296,7 @@ void repowerd::LogindSessionTracker::activate_session(
 
 void repowerd::LogindSessionTracker::deactivate_session()
 {
-    log->log(log_tag, "deactivate_session()");
+    log->log(log_tag, "deactivate_session(%d)", ignore_session_deactivation);
 
     if (ignore_session_deactivation)
         return;

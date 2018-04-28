@@ -32,6 +32,7 @@
 #include "state_machine_options.h"
 #include "system_power_control.h"
 #include "timer.h"
+#include "power_button.h"
 
 namespace
 {
@@ -424,22 +425,31 @@ void repowerd::DefaultStateMachine::handle_notification()
     schedule_notification_expiration_alarm();
 }
 
-void repowerd::DefaultStateMachine::handle_power_button_press()
+void repowerd::DefaultStateMachine::handle_power_button_press(PowerButtonState state)
 {
-    log->log(log_tag, "handle_power_button_press");
+    log->log(log_tag, "handle_power_button_press - %d", (int)state);
 
     display_power_mode_at_power_button_press = display_power_mode;
 
-    if (treat_power_button_as_user_activity &&
-        display_power_mode == DisplayPowerMode::on)
-    {
-        brighten_display();
-        schedule_normal_user_inactivity_alarm();
-        display_power_mode_reason = DisplayPowerChangeReason::power_button;
-    }
-    else if (display_power_mode == DisplayPowerMode::off)
-    {
-        turn_on_display_with_normal_timeout(DisplayPowerChangeReason::power_button);
+    switch (state) {
+        case PowerButtonState::onPressed:
+            if (treat_power_button_as_user_activity && display_power_mode == DisplayPowerMode::on)
+            {
+                brighten_display();
+                schedule_normal_user_inactivity_alarm();
+                display_power_mode_reason = DisplayPowerChangeReason::power_button;
+            } else if (display_power_mode == DisplayPowerMode::off) {
+                turn_on_display_with_normal_timeout(DisplayPowerChangeReason::power_button);
+            }
+            break;
+        case PowerButtonState::offPressed:
+            //TODO power off device - for now fall through to sleep
+//            break;
+        case PowerButtonState::sleepPressed:
+            turn_off_display(DisplayPowerChangeReason::power_button);
+            break;
+        default:
+            break;
     }
 
     power_button_long_press_alarm_id =
@@ -453,11 +463,6 @@ void repowerd::DefaultStateMachine::handle_power_button_release()
     if (power_button_long_press_detected)
     {
         power_button_long_press_detected = false;
-    }
-    else if (display_power_mode_at_power_button_press == DisplayPowerMode::on &&
-             !treat_power_button_as_user_activity)
-    {
-        turn_off_display(DisplayPowerChangeReason::power_button);
     }
 
     display_power_mode_at_power_button_press = DisplayPowerMode::unknown;

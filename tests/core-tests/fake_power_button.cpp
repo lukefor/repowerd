@@ -38,12 +38,22 @@ repowerd::HandlerRegistration rt::FakePowerButton::register_power_button_handler
         }};
 }
 
-void rt::FakePowerButton::press()
-{
-    handler(PowerButtonState::pressed);
-}
-
 void rt::FakePowerButton::release()
 {
     handler(PowerButtonState::released);
+}
+
+void rt::FakePowerButton::onPress()
+{
+    handler(PowerButtonState::onPressed);
+}
+
+void rt::FakePowerButton::sleepPress()
+{
+    handler(PowerButtonState::sleepPressed);
+}
+
+void rt::FakePowerButton::offPress()
+{
+    handler(PowerButtonState::offPressed);
 }

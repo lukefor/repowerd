@@ -19,6 +19,7 @@
 #pragma once
 
 #include "alarm_id.h"
+#include "power_button.h"
 #include "power_action.h"
 #include "power_supply.h"
 
@@ -56,7 +57,7 @@ public:
     virtual void handle_no_notification() = 0;
     virtual void handle_notification() = 0;
 
-    virtual void handle_power_button_press() = 0;
+    virtual void handle_power_button_press(PowerButtonState) = 0;
     virtual void handle_power_button_release() = 0;
 
     virtual void handle_power_source_change() = 0;
