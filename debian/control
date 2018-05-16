@@ -23,7 +23,8 @@ Package: repowerd
 Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-         repowerd-data (= ${source:Version})
+         repowerd-data (= ${source:Version}),
+         gemian-leds
 Replaces: powerd (<< 2016.05~)
 Breaks: powerd (<< 2016.05~)
 Provides: powerd
