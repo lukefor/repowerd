@@ -16,6 +16,7 @@
  * Authored by: Alexandros Frantzis <alexandros.frantzis@canonical.com>
  */
 
+#include <sys/param.h>
 #include "default_state_machine.h"
 
 #include "display_information.h"
@@ -578,14 +579,16 @@ void repowerd::DefaultStateMachine::handle_modify_normal_brightness_value(std::s
 
     log->log(log_tag, "handle_modify_normal_brightness_value(%s), (%.2f)", direction.c_str(), brightness);
 
-    if (direction == "+" && brightness < 1)
+    if (direction == "+")
     {
         brightness += 0.1;
     }
-    else if (brightness > 0.2)
+    else
     {
         brightness -= 0.1;
     }
+    brightness = MIN(brightness, 1);
+    brightness = MAX(brightness, 0.1);
 
     brightness_control->set_normal_brightness_value(brightness);
 }
