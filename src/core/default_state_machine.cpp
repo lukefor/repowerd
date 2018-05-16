@@ -578,11 +578,11 @@ void repowerd::DefaultStateMachine::handle_modify_normal_brightness_value(std::s
 
     log->log(log_tag, "handle_modify_normal_brightness_value(%s), (%.2f)", direction.c_str(), brightness);
 
-    if (direction == "+")
+    if (direction == "+" && brightness < 1)
     {
         brightness += 0.1;
     }
-    else
+    else if (brightness > 0.2)
     {
         brightness -= 0.1;
     }
