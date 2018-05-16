@@ -98,6 +98,7 @@ struct MockStateMachine : public repowerd::StateMachine
     MOCK_METHOD0(handle_user_activity_changing_power_state, void());
 
     MOCK_METHOD1(handle_set_normal_brightness_value, void(double));
+    MOCK_METHOD1(handle_modify_normal_brightness_value, void(std::string const&));
     MOCK_METHOD0(handle_enable_autobrightness, void());
     MOCK_METHOD0(handle_disable_autobrightness, void());
 

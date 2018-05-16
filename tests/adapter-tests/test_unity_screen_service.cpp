@@ -78,6 +78,12 @@ struct AUnityScreenService : testing::Test
                 {
                     mock_handlers.set_normal_brightness_value(v, pid);
                 }));
+        registrations.push_back(
+            service.register_modify_normal_brightness_value_handler(
+                [this] (std::string const& direction, auto pid)
+                {
+                    mock_handlers.modify_normal_brightness_value(direction, pid);
+                }));
 
         registrations.push_back(
             service.register_notification_handler(
@@ -98,6 +104,7 @@ struct AUnityScreenService : testing::Test
         MOCK_METHOD1(disable_autobrightness, void(pid_t));
         MOCK_METHOD1(enable_autobrightness, void(pid_t));
         MOCK_METHOD2(set_normal_brightness_value, void(double, pid_t));
+        MOCK_METHOD2(modify_normal_brightness_value, void(std::string const &, pid_t));
 
         MOCK_METHOD2(notification, void(std::string const&, pid_t));
         MOCK_METHOD2(notification_done, void(std::string const&, pid_t));
@@ -716,4 +723,23 @@ TEST_F(AUnityScreenService, logs_name_owner_changed_for_tracked_notification_cli
     EXPECT_TRUE(request_processed.woken());
 
     EXPECT_TRUE(fake_log.contains_line({"NameOwnerChanged", client.unique_name()}));
+}
+
+TEST_F(AUnityScreenService, modify_user_brightness_plus)
+{
+    EXPECT_CALL(mock_handlers, modify_normal_brightness_value(_,_));
+
+    EXPECT_TRUE(client.request_modify_user_brightness("+").get());
+}
+
+TEST_F(AUnityScreenService, modify_user_brightness_minus)
+{
+    EXPECT_CALL(mock_handlers, modify_normal_brightness_value(_,_));
+
+    EXPECT_TRUE(client.request_modify_user_brightness("-").get());
+}
+
+TEST_F(AUnityScreenService, modify_user_brightness_invalid)
+{
+    EXPECT_FALSE(client.request_modify_user_brightness("~").get());
 }

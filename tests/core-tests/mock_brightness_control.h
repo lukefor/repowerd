@@ -35,6 +35,7 @@ public:
     MOCK_METHOD0(set_dim_brightness, void());
     MOCK_METHOD0(set_normal_brightness, void());
     MOCK_METHOD1(set_normal_brightness_value, void(double));
+    MOCK_METHOD0(get_normal_brightness_value, double());
     MOCK_METHOD0(set_off_brightness, void());
 };
 

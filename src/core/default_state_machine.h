@@ -72,6 +72,7 @@ public:
     void handle_user_activity_extending_power_state() override;
 
     void handle_set_normal_brightness_value(double value) override;
+    void handle_modify_normal_brightness_value(std::string const &direction) override;
     void handle_enable_autobrightness() override;
     void handle_disable_autobrightness() override;
 

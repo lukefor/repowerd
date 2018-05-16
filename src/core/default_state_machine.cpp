@@ -563,13 +563,31 @@ void repowerd::DefaultStateMachine::handle_user_activity_extending_power_state()
 
 void repowerd::DefaultStateMachine::handle_set_normal_brightness_value(double value)
 {
-    log->log(log_tag, "handle_set_normal_brightness_value(%.2f)", value);
+    log->log(log_tag, "handle_set_normal_brightness_value(%.2f), paused: %d", value, paused);
 
     normal_brightness_value = value;
 
     if (paused) return;
 
     brightness_control->set_normal_brightness_value(value);
+}
+
+void repowerd::DefaultStateMachine::handle_modify_normal_brightness_value(std::string const &direction)
+{
+    double brightness = brightness_control->get_normal_brightness_value();
+
+    log->log(log_tag, "handle_modify_normal_brightness_value(%s), (%.2f)", direction.c_str(), brightness);
+
+    if (direction == "+")
+    {
+        brightness += 0.1;
+    }
+    else
+    {
+        brightness -= 0.1;
+    }
+
+    brightness_control->set_normal_brightness_value(brightness);
 }
 
 void repowerd::DefaultStateMachine::handle_enable_autobrightness()
@@ -823,6 +841,7 @@ void repowerd::DefaultStateMachine::turn_off_display(
     DisplayPowerChangeReason reason)
 {
     if (paused) return;
+    log->log(log_tag, "turn_off_display");
 
     brightness_control->set_off_brightness();
     display_power_control->turn_off(DisplayPowerControlFilter::all, lid_closed);
@@ -846,7 +865,7 @@ void repowerd::DefaultStateMachine::turn_off_display(
 void repowerd::DefaultStateMachine::turn_on_display_without_timeout(
     DisplayPowerChangeReason reason)
 {
-    log->log(log_tag, "turn_on_display_without_timeout p:%d, l:%d",paused, lid_closed);
+    log->log(log_tag, "turn_on_display_without_timeout p:%d, l:%d", paused, lid_closed);
 
     if (paused) return;
 
@@ -881,6 +900,7 @@ void repowerd::DefaultStateMachine::turn_on_display_with_reduced_timeout(
 void repowerd::DefaultStateMachine::brighten_display()
 {
     if (paused) return;
+    log->log(log_tag, "brighten_display %.2f", brightness_control->get_normal_brightness_value());
 
     brightness_control->set_normal_brightness();
 }
@@ -888,6 +908,7 @@ void repowerd::DefaultStateMachine::brighten_display()
 void repowerd::DefaultStateMachine::dim_display()
 {
     if (paused) return;
+    log->log(log_tag, "dim_display");
 
     brightness_control->set_dim_brightness();
 }

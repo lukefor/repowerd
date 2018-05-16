@@ -256,6 +256,18 @@ repowerd::Daemon::register_event_handlers()
             }));
 
     registrations.push_back(
+        client_requests->register_modify_normal_brightness_value_handler(
+            [this] (std::string const& value, pid_t pid)
+            {
+                enqueue_action_to_sessions(
+                    sessions_for_pid(pid),
+                    [this,value] (Session* s)
+                    {
+                        s->state_machine->handle_modify_normal_brightness_value(value);
+                    });
+            }));
+
+    registrations.push_back(
         client_requests->register_disable_autobrightness_handler(
             [this] (pid_t pid)
             {

@@ -34,6 +34,7 @@ public:
     virtual void set_normal_brightness() = 0;
     virtual void set_normal_brightness_value(double) = 0;
     virtual void set_off_brightness() = 0;
+    virtual double get_normal_brightness_value() = 0;
 
 protected:
     BrightnessControl() = default;

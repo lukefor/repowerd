@@ -119,6 +119,19 @@ repowerd::HandlerRegistration rt::FakeClientRequests::register_set_normal_bright
         }};
 }
 
+repowerd::HandlerRegistration rt::FakeClientRequests::register_modify_normal_brightness_value_handler(
+    ModifyNormalBrightnessValueHandler const& handler)
+{
+    mock.register_modify_normal_brightness_value_handler(handler);
+    modify_normal_brightness_value_handler = handler;
+    return HandlerRegistration{
+        [this]
+        {
+            mock.unregister_modify_normal_brightness_value_handler();
+            modify_normal_brightness_value_handler = null_arg2_handler;
+        }};
+}
+
 repowerd::HandlerRegistration rt::FakeClientRequests::register_allow_suspend_handler(
     AllowSuspendHandler const& handler)
 {

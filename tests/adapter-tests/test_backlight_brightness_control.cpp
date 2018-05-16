@@ -635,3 +635,14 @@ TEST_F(ABacklightBrightnessControl, logs_autobrightness_values)
     EXPECT_TRUE(fake_log.contains_line(
         {"autobrightness", "value", std::to_string(autobrightness_value).substr(0, 4)}));
 }
+
+TEST_F(ABacklightBrightnessControl, get_normal_brightness)
+{
+    auto const brightness_value = 0.38;
+
+    brightness_control.set_normal_brightness_value(brightness_value);
+
+    auto const brightness_read = brightness_control.get_normal_brightness_value();
+
+    EXPECT_EQ(brightness_value, brightness_read);
+}

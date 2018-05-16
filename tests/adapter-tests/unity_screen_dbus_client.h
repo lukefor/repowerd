@@ -32,6 +32,7 @@ public:
 
     DBusAsyncReplyString request_introspection();
     DBusAsyncReplyVoid request_set_user_brightness(int32_t brightness);
+    DBusAsyncReplyBool request_modify_user_brightness(std::string const &direction);
     DBusAsyncReplyVoid request_user_auto_brightness_enable(bool enabled);
     DBusAsyncReplyVoid request_set_inactivity_timeouts(
         int32_t poweroff_timeout, int32_t dimmer_timeout);

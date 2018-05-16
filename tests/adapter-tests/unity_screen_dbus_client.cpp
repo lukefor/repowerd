@@ -44,6 +44,13 @@ rt::DBusAsyncReplyVoid rt::UnityScreenDBusClient::request_set_user_brightness(in
         g_variant_new("(i)", brightness));
 }
 
+rt::DBusAsyncReplyBool rt::UnityScreenDBusClient::request_modify_user_brightness(std::string const &direction)
+{
+    return invoke_with_reply<rt::DBusAsyncReplyBool>(
+        unity_screen_interface, "modifyUserBrightness",
+        g_variant_new("(s)", direction.c_str()));
+}
+
 rt::DBusAsyncReplyVoid rt::UnityScreenDBusClient::request_user_auto_brightness_enable(bool enabled)
 {
     gboolean const e = enabled ? TRUE : FALSE;

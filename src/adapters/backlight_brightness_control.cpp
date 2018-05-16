@@ -216,6 +216,11 @@ void repowerd::BacklightBrightnessControl::set_off_brightness()
         }).get();
 }
 
+double repowerd::BacklightBrightnessControl::get_normal_brightness_value()
+{
+    return normal_brightness;
+}
+
 repowerd::HandlerRegistration
 repowerd::BacklightBrightnessControl::register_brightness_handler(
     BrightnessHandler const& handler)

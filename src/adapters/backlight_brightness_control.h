@@ -53,6 +53,7 @@ public:
     void set_normal_brightness() override;
     void set_normal_brightness_value(double) override;
     void set_off_brightness() override;
+    double get_normal_brightness_value() override;
 
     HandlerRegistration register_brightness_handler(
         BrightnessHandler const& handler) override;

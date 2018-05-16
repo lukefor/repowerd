@@ -70,6 +70,8 @@ public:
         EnableAutobrightnessHandler const& handler) override;
     HandlerRegistration register_set_normal_brightness_value_handler(
         SetNormalBrightnessValueHandler const& handler) override;
+    HandlerRegistration register_modify_normal_brightness_value_handler(
+        ModifyNormalBrightnessValueHandler const& handler) override;
 
     HandlerRegistration register_notification_handler(
         NotificationHandler const& handler) override;
@@ -104,6 +106,7 @@ private:
     int32_t dbus_keepDisplayOn(std::string const& sender, pid_t pid);
     void dbus_removeDisplayOnRequest(std::string const& sender, int32_t id, pid_t pid);
     void dbus_setUserBrightness(int32_t brightness, pid_t pid);
+    bool dbus_modifyUserBrightness(std::string const& direction, pid_t pid);
     void dbus_setInactivityTimeouts(int32_t poweroff_timeout, int32_t dimmer_timeout, pid_t pid);
     void dbus_userAutobrightnessEnable(bool enable, pid_t pid);
     void dbus_NameOwnerChanged(
@@ -151,6 +154,7 @@ private:
     DisableAutobrightnessHandler disable_autobrightness_handler;
     EnableAutobrightnessHandler enable_autobrightness_handler;
     SetNormalBrightnessValueHandler set_normal_brightness_value_handler;
+    ModifyNormalBrightnessValueHandler modify_normal_brightness_value_handler;
     NotificationHandler notification_handler;
     NotificationDoneHandler notification_done_handler;
     AllowSuspendHandler allow_suspend_handler;

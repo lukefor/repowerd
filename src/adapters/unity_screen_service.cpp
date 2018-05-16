@@ -96,6 +96,10 @@ char const* const unity_screen_service_introspection = R"(<!DOCTYPE node PUBLIC 
     <method name='setUserBrightness'>
       <arg name='brightness' type='i' direction='in'/>
     </method>
+    <method name='modifyUserBrightness'>
+      <arg type='b' direction='out'/>
+      <arg name='direction' type='s' direction='in'/>
+    </method>
     <method name='userAutobrightnessEnable'>
       <arg name='enable' type='b' direction='in'/>
     </method>
@@ -137,7 +141,7 @@ char const* const unity_powerd_service_introspection = R"(
       <arg type='s' name='cookie' direction='in' />
     </method>
     <method name='getBrightnessParams'>
-      <!-- Returns dim, min, max, and default brighness and whether or not
+      <!-- Returns dim, min, max, and default brightness and whether or not
            autobrightness is supported, in that order -->
       <arg type='(iiiib)' name='params' direction="out" />
     </method>
@@ -324,6 +328,16 @@ repowerd::UnityScreenService::register_set_normal_brightness_value_handler(
 }
 
 repowerd::HandlerRegistration
+repowerd::UnityScreenService::register_modify_normal_brightness_value_handler(
+    ModifyNormalBrightnessValueHandler const& handler)
+{
+    return EventLoopHandlerRegistration{
+        dbus_event_loop,
+        [this, &handler] { modify_normal_brightness_value_handler = handler; },
+        [this] { modify_normal_brightness_value_handler = null_arg2_handler; }};
+}
+
+repowerd::HandlerRegistration
 repowerd::UnityScreenService::register_notification_handler(
     NotificationHandler const& handler)
 {
@@ -418,6 +432,15 @@ void repowerd::UnityScreenService::dbus_method_call(
         dbus_setUserBrightness(brightness, pid);
 
         g_dbus_method_invocation_return_value(invocation, NULL);
+    }
+    else if (method_name == "modifyUserBrightness")
+    {
+        char const* direction{""};
+        g_variant_get(parameters, "(&s)", &direction);
+
+        bool result = dbus_modifyUserBrightness(direction, pid);
+
+        g_dbus_method_invocation_return_value(invocation, g_variant_new("(b)", result));
     }
     else if (method_name == "setInactivityTimeouts")
     {
@@ -635,6 +658,18 @@ void repowerd::UnityScreenService::dbus_setUserBrightness(
     set_normal_brightness_value_handler(
         brightness/static_cast<double>(brightness_params.max_value),
         pid);
+}
+
+bool repowerd::UnityScreenService::dbus_modifyUserBrightness(std::string const& direction, pid_t pid)
+{
+    bool ret = false;
+
+    if (direction.length() > 0 && (direction == "+" || direction == "-")) {
+        modify_normal_brightness_value_handler(direction, pid);
+        ret = true;
+    }
+
+    return ret;
 }
 
 void repowerd::UnityScreenService::dbus_setInactivityTimeouts(

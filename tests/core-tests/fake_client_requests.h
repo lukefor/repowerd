@@ -48,6 +48,8 @@ public:
         EnableAutobrightnessHandler const& handler) override;
     HandlerRegistration register_set_normal_brightness_value_handler(
         SetNormalBrightnessValueHandler const& handler) override;
+    HandlerRegistration register_modify_normal_brightness_value_handler(
+        ModifyNormalBrightnessValueHandler const& handler) override;
 
     HandlerRegistration register_allow_suspend_handler(
         AllowSuspendHandler const& handler) override;
@@ -79,6 +81,8 @@ public:
         MOCK_METHOD0(unregister_enable_autobrightness_handler, void());
         MOCK_METHOD1(register_set_normal_brightness_value_handler, void(SetNormalBrightnessValueHandler const&));
         MOCK_METHOD0(unregister_set_normal_brightness_value_handler, void());
+        MOCK_METHOD1(register_modify_normal_brightness_value_handler, void(ModifyNormalBrightnessValueHandler const&));
+        MOCK_METHOD0(unregister_modify_normal_brightness_value_handler, void());
         MOCK_METHOD1(register_allow_suspend_handler, void(AllowSuspendHandler const&));
         MOCK_METHOD0(unregister_allow_suspend_handler, void());
         MOCK_METHOD1(register_disallow_suspend_handler, void(DisallowSuspendHandler const&));
@@ -93,6 +97,7 @@ private:
     DisableAutobrightnessHandler disable_autobrightness_handler;
     EnableAutobrightnessHandler enable_autobrightness_handler;
     SetNormalBrightnessValueHandler set_normal_brightness_value_handler;
+    ModifyNormalBrightnessValueHandler modify_normal_brightness_value_handler;
     AllowSuspendHandler allow_suspend_handler;
     DisallowSuspendHandler disallow_suspend_handler;
 };
