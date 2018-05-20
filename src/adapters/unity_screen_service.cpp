@@ -110,6 +110,9 @@ char const* const unity_screen_service_introspection = R"(<!DOCTYPE node PUBLIC 
     <method name='setTouchVisualizationEnabled'>
       <arg name='enabled' type='b' direction='in'/>
     </method>
+    <method name="getDisplayPowerState">
+      <arg direction="out" name="displayPowerState" type="i"/>
+    </method>
     <signal name='DisplayPowerStateChange'>
       <arg name='state' type='i'/>
       <arg name='reason' type='i'/>
@@ -533,6 +536,14 @@ void repowerd::UnityScreenService::dbus_method_call(
                 params.default_value,
                 params.autobrightness_supported));
     }
+    else if (method_name == "getDisplayPowerState")
+    {
+        auto status = dbus_getDisplayPowerState();
+
+        g_dbus_method_invocation_return_value(
+                invocation,
+                g_variant_new("(i)", status));
+    }
     else
     {
         dbus_unknown_method(sender, method_name);
@@ -722,6 +733,8 @@ void repowerd::UnityScreenService::dbus_emit_DisplayPowerStateChange(
     log->log(log_tag, "dbus_emit_DisplayPowerStateChange(%d,%d)",
              power_state, reason);
 
+    display_power_state = power_state;
+
     g_dbus_connection_emit_signal(
         dbus_connection,
         nullptr,
@@ -824,6 +837,13 @@ repowerd::BrightnessParams repowerd::UnityScreenService::dbus_getBrightnessParam
     return brightness_params;
 }
 
+int32_t repowerd::UnityScreenService::dbus_getDisplayPowerState()
+{
+    log->log(log_tag, "dbus_getDisplayPowerState() => (%d)", display_power_state);
+
+    return display_power_state;
+}
+
 void repowerd::UnityScreenService::dbus_emit_Wakeup()
 {
     log->log(log_tag, "dbus_emit_Wakeup()");
@@ -897,3 +917,5 @@ pid_t repowerd::UnityScreenService::dbus_get_invocation_sender_pid(
 
     return pid;
 }
+
+

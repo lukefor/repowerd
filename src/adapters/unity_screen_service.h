@@ -33,6 +33,7 @@
 
 #include <gio/gio.h>
 #include <sys/types.h>
+#include <src/core/brightness_control.h>
 
 namespace repowerd
 {
@@ -135,6 +136,7 @@ private:
         uint64_t time);
     void dbus_clearWakeup(std::string const& sender, std::string const& cookie);
     BrightnessParams dbus_getBrightnessParams();
+    int32_t dbus_getDisplayPowerState();
     void dbus_emit_Wakeup();
     void dbus_emit_brightness(double brightness);
 
@@ -170,6 +172,8 @@ private:
     int32_t next_request_sys_state_id;
     BrightnessParams brightness_params;
 
+    int32_t display_power_state;
+
     // These need to be at the end, so that handlers are unregistered first on
     // destruction, to avoid accessing other members if an event arrives
     // on destruction.
@@ -178,6 +182,7 @@ private:
     HandlerRegistration powerd_handler_registration;
     HandlerRegistration wakeup_handler_registration;
     HandlerRegistration brightness_handler_registration;
+
 };
 
 }
