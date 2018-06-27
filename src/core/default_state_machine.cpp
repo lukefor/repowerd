@@ -257,7 +257,7 @@ void repowerd::DefaultStateMachine::handle_set_inactivity_behavior(
     {
         return;
     }
-
+/*
     bool power_supply_is_active{false};
     auto& inactivity_timeout =
         power_action == PowerAction::display_off ?
@@ -274,9 +274,9 @@ void repowerd::DefaultStateMachine::handle_set_inactivity_behavior(
         inactivity_timeout.on_line_power = timeout;
         power_supply_is_active = !user_inactivity_normal_display_off_timeout.is_on_battery;
     }
-
-    if (scheduled_timeout_type == ScheduledTimeoutType::normal && power_supply_is_active)
-        schedule_normal_user_inactivity_alarm();
+*/
+    //if (scheduled_timeout_type == ScheduledTimeoutType::normal && power_supply_is_active)
+   //     schedule_normal_user_inactivity_alarm();
 }
 
 void repowerd::DefaultStateMachine::handle_lid_closed()
@@ -581,14 +581,17 @@ void repowerd::DefaultStateMachine::handle_modify_normal_brightness_value(std::s
 
     if (direction == "+")
     {
-        brightness += 0.1;
+        if (brightness == 0.01)
+             brightness = 0.05;
+        else
+             brightness += 0.05;
     }
     else
     {
-        brightness -= 0.1;
+        brightness -= 0.05;
     }
     brightness = MIN(brightness, 1);
-    brightness = MAX(brightness, 0.1);
+    brightness = MAX(brightness, 0.01);
 
     brightness_control->set_normal_brightness_value(brightness);
 }
