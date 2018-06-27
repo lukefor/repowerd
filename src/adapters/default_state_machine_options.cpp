@@ -95,7 +95,7 @@ repowerd::DefaultStateMachineOptions::user_inactivity_normal_display_dim_duratio
 std::chrono::milliseconds
 repowerd::DefaultStateMachineOptions::user_inactivity_normal_display_off_timeout() const
 {
-    return 600s;
+    return 600000s;
 }
 
 std::chrono::milliseconds
