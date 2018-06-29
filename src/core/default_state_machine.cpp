@@ -581,17 +581,22 @@ void repowerd::DefaultStateMachine::handle_modify_normal_brightness_value(std::s
 
     if (direction == "+")
     {
-        if (brightness == 0.01)
-             brightness = 0.05;
+		if (brightness == 0.005)
+			brightness = 0.01;
+        else if (brightness < 0.1)
+			brightness += 0.01;
         else
-             brightness += 0.05;
+            brightness += 0.05;
     }
     else
     {
-        brightness -= 0.05;
+        if (brightness < 0.1)
+			brightness -= 0.01;
+        else
+            brightness -= 0.05;
     }
     brightness = MIN(brightness, 1);
-    brightness = MAX(brightness, 0.01);
+    brightness = MAX(brightness, 0.005);
 
     brightness_control->set_normal_brightness_value(brightness);
 }

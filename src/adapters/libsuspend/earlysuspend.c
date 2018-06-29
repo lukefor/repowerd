@@ -47,7 +47,7 @@ static pthread_cond_t fb_state_cond = PTHREAD_COND_INITIALIZER;
 static int wait_for_fb = 0;
 
 static const char earlysuspend_name[] = "earlysuspend";
-static const char state_path[] = "/sys/power/stateeeee";
+static const char state_path[] = "/sys/power/state";
 static const char wakelock_path[] = "/sys/power/wake_lock";
 static const char wakeunlock_path[] = "/sys/power/wake_unlock";
 
