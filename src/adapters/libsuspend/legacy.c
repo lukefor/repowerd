@@ -22,7 +22,7 @@
 #include "sysfs.h"
 
 static const char legacy_name[] = "legacy";
-static const char state_path[] = "/sys/power/state";
+static const char state_path[] = "/sys/power/stateeeee";
 static const char wakelock_path[] = "/sys/power/wake_lock";
 static const char wakeup_count_path[] = "/sys/power/wakeup_count";
 static const char mem_str[] = "mem";

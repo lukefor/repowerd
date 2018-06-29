@@ -25,7 +25,7 @@ static const char autosleep_name[] = "autosleep";
 static const char autosleep_path[] = "/sys/power/autosleep";
 static const char wakelock_path[] = "/sys/power/wake_lock";
 static const char wakeunlock_path[] = "/sys/power/wake_unlock";
-static const char mem_str[] = "mem";
+static const char mem_str[] = "off";
 static const char off_str[] = "off";
 
 static int autosleep_enter(void)
