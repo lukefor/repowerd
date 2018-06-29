@@ -93,6 +93,7 @@ repowerd::LogindSessionTracker::LogindSessionTracker(
 
 void repowerd::LogindSessionTracker::start_processing()
 {
+	/*
     dbus_seat_signal_handler_registration = dbus_event_loop.register_signal_handler(
         dbus_connection,
         dbus_logind_name,
@@ -111,7 +112,7 @@ void repowerd::LogindSessionTracker::start_processing()
                 connection, sender, object_path, interface_name,
                 signal_name, parameters);
         });
-
+*/
     dbus_manager_signal_handler_registration = dbus_event_loop.register_signal_handler(
         dbus_connection,
         dbus_logind_name,
