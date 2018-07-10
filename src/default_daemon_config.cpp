@@ -368,7 +368,7 @@ repowerd::DefaultDaemonConfig::the_backlight()
 {
     if (!backlight)
     {
-        try
+        /*try
         {
             backlight = std::make_shared<AndroidBacklight>();
         }
@@ -376,14 +376,14 @@ repowerd::DefaultDaemonConfig::the_backlight()
         {
             the_log()->log(log_tag, "Failed to create AndroidBacklight: %s", e.what());
             the_log()->log(log_tag, "Trying SysfsBacklight");
-        }
+        }*/
 
         try
         {
             if (!backlight)
             {
                 backlight = std::make_shared<SysfsBacklight>(
-                    the_log(), the_filesystem());
+                    the_log(), the_exec(), the_filesystem());
             }
         }
         catch (std::exception const& e)

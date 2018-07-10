@@ -360,7 +360,7 @@ repowerd::Daemon::register_event_handlers()
             [this] (LockState lock_state)
             {
                 the_log->log(log_tag, "lock handler - %d", lock_state == LockState::active);
-                if (lock_state == LockState::active)
+                /*if (lock_state == LockState::active)
                 {
                     enqueue_action_to_active_session(
                         [this] (Session* s) { s->state_machine->handle_lock_active(); });
@@ -369,7 +369,7 @@ repowerd::Daemon::register_event_handlers()
                 {
                     enqueue_action_to_active_session(
                         [this] (Session* s) { s->state_machine->handle_lock_inactive(); });
-                }
+                }*/
             }));
 
     registrations.push_back(

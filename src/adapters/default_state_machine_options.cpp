@@ -89,13 +89,13 @@ repowerd::DefaultStateMachineOptions::power_button_long_press_timeout() const
 std::chrono::milliseconds
 repowerd::DefaultStateMachineOptions::user_inactivity_normal_display_dim_duration() const
 {
-    return 10s;
+    return repowerd::infinite_timeout;
 }
 
 std::chrono::milliseconds
 repowerd::DefaultStateMachineOptions::user_inactivity_normal_display_off_timeout() const
 {
-    return 600000s;
+    return repowerd::infinite_timeout;
 }
 
 std::chrono::milliseconds
@@ -107,13 +107,13 @@ repowerd::DefaultStateMachineOptions::user_inactivity_normal_suspend_timeout() c
 std::chrono::milliseconds
 repowerd::DefaultStateMachineOptions::user_inactivity_post_notification_display_off_timeout() const
 {
-    return 5s;
+    return repowerd::infinite_timeout;
 }
 
 std::chrono::milliseconds
 repowerd::DefaultStateMachineOptions::user_inactivity_reduced_display_off_timeout() const
 {
-    return 10s;
+    return repowerd::infinite_timeout;
 }
 
 bool repowerd::DefaultStateMachineOptions::treat_power_button_as_user_activity() const

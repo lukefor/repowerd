@@ -21,6 +21,8 @@
 #include "backlight.h"
 
 #include "path.h"
+#include "../core/exec.h"
+//#include "timer.h"
 
 #include <memory>
 #include <string>
@@ -35,6 +37,8 @@ class SysfsBacklight : public Backlight
 public:
     SysfsBacklight(
         std::shared_ptr<Log> const& log,
+        std::shared_ptr<Exec> const& exec,
+        //std::shared_ptr<Timer> const& timer,
         std::shared_ptr<Filesystem> const& filesystem);
 
     void set_brightness(double) override;
@@ -43,11 +47,14 @@ public:
 private:
     int absolute_brightness_for(double relative_brightness);
 
+    std::shared_ptr<Log> const log;
+    std::shared_ptr<Exec> const exec;
     std::shared_ptr<Filesystem> const filesystem;
     Path const sysfs_backlight_dir;
     Path const sysfs_brightness_file;
     int const max_brightness;
     double last_set_brightness;
+	//AlarmId aal_alarm = 0;
 };
 
 }

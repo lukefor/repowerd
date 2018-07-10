@@ -102,8 +102,11 @@ int determine_max_brightness(
 
 repowerd::SysfsBacklight::SysfsBacklight(
     std::shared_ptr<Log> const& log,
+    std::shared_ptr<Exec> const& exec,
     std::shared_ptr<Filesystem> const& filesystem)
-    : filesystem{filesystem},
+    : log{log},
+	  exec{exec},
+	  filesystem{filesystem},
       sysfs_backlight_dir{determine_sysfs_backlight_dir(*filesystem)},
       sysfs_brightness_file{sysfs_backlight_dir/"brightness"},
       max_brightness{determine_max_brightness(*filesystem, sysfs_backlight_dir)},
@@ -115,10 +118,12 @@ repowerd::SysfsBacklight::SysfsBacklight(
 
 void repowerd::SysfsBacklight::set_brightness(double value)
 {
+	exec->exec("killall -CONT /vendor/bin/aal");
     auto ostream = filesystem->ostream(sysfs_brightness_file);
     *ostream << absolute_brightness_for(value);
     ostream->flush();
     last_set_brightness = value;
+	exec->exec("sh -c 'sleep 1 && killall -STOP /vendor/bin/aal' &");
 }
 
 double repowerd::SysfsBacklight::get_brightness()

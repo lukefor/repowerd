@@ -232,13 +232,16 @@ repowerd::BacklightBrightnessControl::register_brightness_handler(
 }
 
 void repowerd::BacklightBrightnessControl::transition_to_brightness_value(
-    double brightness, TransitionSpeed transition_speed)
+    double brightness, TransitionSpeed /*transition_speed*/)
 {
     auto const step = 0.01;
     auto const backlight_brightness = get_brightness_value();
     auto const starting_brightness =
         backlight_brightness == Backlight::unknown_brightness ?
         brightness - step : backlight_brightness;
+		
+	set_brightness_value(brightness);
+	/*
     auto const num_steps = std::ceil(std::fabs(starting_brightness - brightness) / step);
     auto const step_time = (transition_speed == TransitionSpeed::slow ||
                             starting_brightness == 0.0
@@ -272,12 +275,12 @@ void repowerd::BacklightBrightnessControl::transition_to_brightness_value(
             set_brightness_value(current_brightness);
             chrono->sleep_for(std::chrono::duration_cast<std::chrono::nanoseconds>(step_time));
         }
-    }
+    }*/
 
     if (starting_brightness != brightness)
     {
         log->log(log_tag, "Transitioning brightness %.2f => %.2f done",
-                 starting_brightness, current_brightness);
+                 starting_brightness, brightness);
     }
 
     if (starting_brightness != brightness)
